@@ -1,12 +1,28 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import CarCard from "../../components/CarCard";
 import { supabase } from "../../lib/supabaseClient";
 
 export default function CarsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <p className="text-gray-600">Loading cars...</p>
+          </div>
+        </main>
+      }
+    >
+      <CarsPageContent />
+    </Suspense>
+  );
+}
+
+function CarsPageContent() {
   const searchParams = useSearchParams();
   const urlSearch = searchParams.get("search") || "";
 
