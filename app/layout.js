@@ -1,4 +1,5 @@
 import "./globals.css";
+import Header from "../components/Header";
 
 export const metadata = {
   title: "CarDekho Style Marketplace",
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
           backgroundColor: "#f8fafc",
         }}
       >
+        <Header />
         {children}
       </body>
     </html>
