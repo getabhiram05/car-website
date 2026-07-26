@@ -53,6 +53,12 @@ export default function Header() {
 
           {isLoading ? null : user ? (
             <>
+              <Link
+                href="/dashboard"
+                className="text-sm font-medium text-gray-700 hover:text-gray-900"
+              >
+                Dashboard
+              </Link>
               <span className="hidden text-sm text-gray-600 sm:inline">
                 {user.email}
               </span>
