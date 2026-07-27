@@ -51,6 +51,13 @@ export default function Header() {
             Browse Cars
           </Link>
 
+          <Link
+            href="/carcyclopedia"
+            className="text-sm font-medium text-gray-700 hover:text-gray-900"
+          >
+            Carcyclopedia
+          </Link>
+
           {isLoading ? null : user ? (
             <>
               <Link
