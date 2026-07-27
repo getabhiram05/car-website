@@ -1,84 +1,42 @@
 "use client";
 
-import { useState } from "react";
-
-const featuredCars = [
-  {
-    id: "maruti-swift-dzire-2021",
-    title: "Maruti Suzuki Swift Dzire",
-    year: 2021,
-    price: "₹6.75 Lakh",
-    mileage: "32,000 km",
-    fuel: "Petrol",
-    transmission: "Manual",
-    location: "Delhi",
-    image:
-      "https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "hyundai-creta-2020",
-    title: "Hyundai Creta",
-    year: 2020,
-    price: "₹9.80 Lakh",
-    mileage: "41,000 km",
-    fuel: "Diesel",
-    transmission: "Manual",
-    location: "Mumbai",
-    image:
-      "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "honda-city-2019",
-    title: "Honda City",
-    year: 2019,
-    price: "₹8.90 Lakh",
-    mileage: "38,500 km",
-    fuel: "Petrol",
-    transmission: "Automatic",
-    location: "Bengaluru",
-    image:
-      "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "tata-nexon-2022",
-    title: "Tata Nexon",
-    year: 2022,
-    price: "₹11.25 Lakh",
-    mileage: "18,000 km",
-    fuel: "Petrol",
-    transmission: "Manual",
-    location: "Pune",
-    image:
-      "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "mahindra-scorpio-2018",
-    title: "Mahindra Scorpio",
-    year: 2018,
-    price: "₹9.50 Lakh",
-    mileage: "57,000 km",
-    fuel: "Diesel",
-    transmission: "Manual",
-    location: "Jaipur",
-    image:
-      "https://images.unsplash.com/photo-1489824904134-891ab64532f1?auto=format&fit=crop&w=1200&q=80",
-  },
-  {
-    id: "toyota-innova-crysta-2021",
-    title: "Toyota Innova Crysta",
-    year: 2021,
-    price: "₹17.90 Lakh",
-    mileage: "29,000 km",
-    fuel: "Diesel",
-    transmission: "Automatic",
-    location: "Chennai",
-    image:
-      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1200&q=80",
-  },
-];
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabaseClient";
 
 export default function Home() {
   const [homeSearch, setHomeSearch] = useState("");
+  const [featuredCars, setFeaturedCars] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadFeaturedCars() {
+      const { data, error } = await supabase
+        .from("cars")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(6);
+
+      if (error) {
+        console.error("Error loading featured cars:", error);
+      } else {
+        setFeaturedCars(data || []);
+      }
+      setLoading(false);
+    }
+
+    loadFeaturedCars();
+  }, []);
+
+  function getFirstImage(car) {
+    try {
+      const images = JSON.parse(car.images);
+      return images && images.length > 0
+        ? images[0]
+        : "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80";
+    } catch {
+      return "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80";
+    }
+  }
 
   function handleSearch() {
     const trimmedSearch = homeSearch.trim();
@@ -98,6 +56,10 @@ export default function Home() {
 
   function handleFeaturedCompare(carId) {
     window.location.href = `/cars?compare=${encodeURIComponent(carId)}`;
+  }
+
+  function handleStartSelling() {
+    window.location.href = "/signup";
   }
 
   return (
@@ -264,37 +226,6 @@ export default function Home() {
               onKeyDown={handleSearchKeyDown}
             />
 
-            <select style={inputStyle} defaultValue="">
-              <option value="" disabled>
-                Select budget
-              </option>
-              <option>Under ₹5 Lakh</option>
-              <option>₹5 - ₹10 Lakh</option>
-              <option>₹10 - ₹15 Lakh</option>
-              <option>₹15 Lakh+</option>
-            </select>
-
-            <select style={inputStyle} defaultValue="">
-              <option value="" disabled>
-                Select year
-              </option>
-              <option>2024</option>
-              <option>2023</option>
-              <option>2022</option>
-              <option>2021</option>
-              <option>2020</option>
-            </select>
-
-            <select style={inputStyle} defaultValue="">
-              <option value="" disabled>
-                Fuel type
-              </option>
-              <option>Petrol</option>
-              <option>Diesel</option>
-              <option>CNG</option>
-              <option>Electric</option>
-            </select>
-
             <button
               type="button"
               onClick={handleSearch}
@@ -355,134 +286,140 @@ export default function Home() {
             </a>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "20px",
-            }}
-          >
-            {featuredCars.map((car) => (
-              <div
-                key={car.id}
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: "20px",
-                  overflow: "hidden",
-                  boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                <img
-                  src={car.image}
-                  alt={car.title}
+          {loading ? (
+            <p style={{ color: "#475569" }}>Loading cars...</p>
+          ) : featuredCars.length === 0 ? (
+            <p style={{ color: "#475569" }}>No cars found yet.</p>
+          ) : (
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+                gap: "20px",
+              }}
+            >
+              {featuredCars.map((car) => (
+                <div
+                  key={car.id}
                   style={{
-                    width: "100%",
-                    height: "200px",
-                    objectFit: "cover",
-                    display: "block",
+                    backgroundColor: "white",
+                    borderRadius: "20px",
+                    overflow: "hidden",
+                    boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
+                    border: "1px solid #e2e8f0",
                   }}
-                />
-
-                <div style={{ padding: "18px" }}>
-                  <h3 style={{ margin: "0 0 10px 0", fontSize: "22px" }}>
-                    {car.title}
-                  </h3>
-
-                  <div
+                >
+                  <img
+                    src={getFirstImage(car)}
+                    alt={`${car.make} ${car.model}`}
                     style={{
-                      fontSize: "14px",
-                      color: "#475569",
-                      marginBottom: "10px",
+                      width: "100%",
+                      height: "200px",
+                      objectFit: "cover",
+                      display: "block",
                     }}
-                  >
-                    {car.year} • {car.fuel} • {car.transmission}
-                  </div>
+                  />
 
-                  <div
-                    style={{
-                      fontSize: "26px",
-                      fontWeight: "800",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    {car.price}
-                  </div>
+                  <div style={{ padding: "18px" }}>
+                    <h3 style={{ margin: "0 0 10px 0", fontSize: "22px" }}>
+                      {car.make} {car.model}
+                    </h3>
 
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "10px",
-                      marginBottom: "16px",
-                      color: "#334155",
-                      fontSize: "14px",
-                    }}
-                  >
                     <div
                       style={{
-                        backgroundColor: "#f8fafc",
-                        padding: "10px",
-                        borderRadius: "12px",
+                        fontSize: "14px",
+                        color: "#475569",
+                        marginBottom: "10px",
                       }}
                     >
-                      <strong>Mileage</strong>
-                      <br />
-                      {car.mileage}
+                      {car.year} • {car.fuel} • {car.transmission}
                     </div>
 
                     <div
                       style={{
-                        backgroundColor: "#f8fafc",
-                        padding: "10px",
-                        borderRadius: "12px",
+                        fontSize: "26px",
+                        fontWeight: "800",
+                        marginBottom: "10px",
                       }}
                     >
-                      <strong>Location</strong>
-                      <br />
-                      {car.location}
+                      ₹{Number(car.price).toLocaleString("en-IN")}
                     </div>
-                  </div>
 
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <a
-                      href={`/cars/${car.id}`}
+                    <div
                       style={{
-                        flex: 1,
-                        display: "inline-block",
-                        backgroundColor: "#2563eb",
-                        color: "white",
-                        textDecoration: "none",
-                        padding: "12px",
-                        borderRadius: "12px",
-                        fontWeight: "700",
-                        textAlign: "center",
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: "10px",
+                        marginBottom: "16px",
+                        color: "#334155",
+                        fontSize: "14px",
                       }}
                     >
-                      View Details
-                    </a>
+                      <div
+                        style={{
+                          backgroundColor: "#f8fafc",
+                          padding: "10px",
+                          borderRadius: "12px",
+                        }}
+                      >
+                        <strong>Mileage</strong>
+                        <br />
+                        {Number(car.mileage).toLocaleString("en-IN")} km
+                      </div>
 
-                    <button
-                      type="button"
-                      onClick={() => handleFeaturedCompare(car.id)}
-                      style={{
-                        flex: 1,
-                        backgroundColor: "#eff6ff",
-                        color: "#1d4ed8",
-                        border: "none",
-                        padding: "12px",
-                        borderRadius: "12px",
-                        fontWeight: "700",
-                        cursor: "pointer",
-                      }}
-                    >
-                      Compare
-                    </button>
+                      <div
+                        style={{
+                          backgroundColor: "#f8fafc",
+                          padding: "10px",
+                          borderRadius: "12px",
+                        }}
+                      >
+                        <strong>Location</strong>
+                        <br />
+                        {car.location}
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", gap: "10px" }}>
+                      <a
+                        href={`/cars/${car.id}`}
+                        style={{
+                          flex: 1,
+                          display: "inline-block",
+                          backgroundColor: "#2563eb",
+                          color: "white",
+                          textDecoration: "none",
+                          padding: "12px",
+                          borderRadius: "12px",
+                          fontWeight: "700",
+                          textAlign: "center",
+                        }}
+                      >
+                        View Details
+                      </a>
+
+                      <button
+                        type="button"
+                        onClick={() => handleFeaturedCompare(car.id)}
+                        style={{
+                          flex: 1,
+                          backgroundColor: "#eff6ff",
+                          color: "#1d4ed8",
+                          border: "none",
+                          padding: "12px",
+                          borderRadius: "12px",
+                          fontWeight: "700",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Compare
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -549,6 +486,8 @@ export default function Home() {
 
           <div style={{ display: "flex", justifyContent: "flex-start" }}>
             <button
+              type="button"
+              onClick={handleStartSelling}
               style={{
                 backgroundColor: "white",
                 color: "#1d4ed8",

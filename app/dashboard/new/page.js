@@ -20,7 +20,40 @@ export default function NewListingPage() {
   const [location, setLocation] = useState("");
   const [color, setColor] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+
+  function handleFileChange(e) {
+    const files = Array.from(e.target.files || []);
+    setSelectedFiles(files);
+  }
+
+  async function uploadImages(userId) {
+    const uploadedUrls = [];
+
+    for (const file of selectedFiles) {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${userId}/${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("car-images")
+        .upload(fileName, file);
+
+      if (uploadError) {
+        throw new Error(uploadError.message);
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("car-images")
+        .getPublicUrl(fileName);
+
+      uploadedUrls.push(publicUrlData.publicUrl);
+    }
+
+    return uploadedUrls;
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,6 +64,21 @@ export default function NewListingPage() {
 
     if (!userData?.user) {
       router.push("/login");
+      return;
+    }
+
+    let imageUrls = [];
+
+    try {
+      if (selectedFiles.length > 0) {
+        setIsUploading(true);
+        imageUrls = await uploadImages(userData.user.id);
+        setIsUploading(false);
+      }
+    } catch (uploadErr) {
+      setIsUploading(false);
+      setIsLoading(false);
+      setErrorMessage(`Image upload failed: ${uploadErr.message}`);
       return;
     }
 
@@ -49,7 +97,7 @@ export default function NewListingPage() {
       description,
       seller: userData.user.email,
       seller_id: userData.user.id,
-      images: JSON.stringify(imageUrl ? [imageUrl] : []),
+      images: JSON.stringify(imageUrls),
       features: JSON.stringify([]),
     };
 
@@ -217,15 +265,21 @@ export default function NewListingPage() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Image URL (optional for now)
+                Upload Photos (up to 5MB each)
               </label>
               <input
-                type="text"
-                placeholder="https://example.com/car-photo.jpg"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                type="file"
+                accept="image/png, image/jpeg, image/webp"
+                multiple
+                onChange={handleFileChange}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
+              {selectedFiles.length > 0 ? (
+                <p className="mt-1 text-xs text-gray-500">
+                  {selectedFiles.length} photo
+                  {selectedFiles.length > 1 ? "s" : ""} selected
+                </p>
+              ) : null}
             </div>
 
             <div>
@@ -249,7 +303,11 @@ export default function NewListingPage() {
               disabled={isLoading}
               className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isLoading ? "Creating listing..." : "Create Listing"}
+              {isUploading
+                ? "Uploading photos..."
+                : isLoading
+                ? "Creating listing..."
+                : "Create Listing"}
             </button>
           </form>
         </div>

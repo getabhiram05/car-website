@@ -11,6 +11,7 @@ export default function EditListingPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [make, setMake] = useState("");
@@ -24,7 +25,9 @@ export default function EditListingPage() {
   const [location, setLocation] = useState("");
   const [color, setColor] = useState("");
   const [description, setDescription] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+
+  const [existingImages, setExistingImages] = useState([]);
+  const [selectedFiles, setSelectedFiles] = useState([]);
 
   useEffect(() => {
     async function loadCar() {
@@ -65,7 +68,7 @@ export default function EditListingPage() {
       setDescription(car.description || "");
 
       const images = car.images ? JSON.parse(car.images) : [];
-      setImageUrl(images[0] || "");
+      setExistingImages(images);
 
       setIsLoading(false);
     }
@@ -73,10 +76,70 @@ export default function EditListingPage() {
     loadCar();
   }, [carId, router]);
 
+  function handleFileChange(e) {
+    const files = Array.from(e.target.files || []);
+    setSelectedFiles(files);
+  }
+
+  function removeExistingImage(urlToRemove) {
+    setExistingImages((prev) => prev.filter((url) => url !== urlToRemove));
+  }
+
+  async function uploadImages(userId) {
+    const uploadedUrls = [];
+
+    for (const file of selectedFiles) {
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${userId}/${Date.now()}-${Math.random()
+        .toString(36)
+        .slice(2)}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from("car-images")
+        .upload(fileName, file);
+
+      if (uploadError) {
+        throw new Error(uploadError.message);
+      }
+
+      const { data: publicUrlData } = supabase.storage
+        .from("car-images")
+        .getPublicUrl(fileName);
+
+      uploadedUrls.push(publicUrlData.publicUrl);
+    }
+
+    return uploadedUrls;
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     setErrorMessage("");
     setIsSaving(true);
+
+    const { data: userData } = await supabase.auth.getUser();
+
+    if (!userData?.user) {
+      router.push("/login");
+      return;
+    }
+
+    let newImageUrls = [];
+
+    try {
+      if (selectedFiles.length > 0) {
+        setIsUploading(true);
+        newImageUrls = await uploadImages(userData.user.id);
+        setIsUploading(false);
+      }
+    } catch (uploadErr) {
+      setIsUploading(false);
+      setIsSaving(false);
+      setErrorMessage(`Image upload failed: ${uploadErr.message}`);
+      return;
+    }
+
+    const finalImages = [...existingImages, ...newImageUrls];
 
     const updatedCar = {
       make,
@@ -90,7 +153,7 @@ export default function EditListingPage() {
       location,
       color,
       description,
-      images: JSON.stringify(imageUrl ? [imageUrl] : []),
+      images: JSON.stringify(finalImages),
     };
 
     const { error } = await supabase
@@ -296,15 +359,51 @@ export default function EditListingPage() {
 
             <div>
               <label className="mb-2 block text-sm font-medium text-gray-700">
-                Image URL
+                Current Photos
+              </label>
+              {existingImages.length > 0 ? (
+                <div className="grid grid-cols-3 gap-3 sm:grid-cols-4">
+                  {existingImages.map((url) => (
+                    <div key={url} className="relative">
+                      <img
+                        src={url}
+                        alt="Car"
+                        className="h-24 w-full rounded-lg object-cover ring-1 ring-gray-200"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeExistingImage(url)}
+                        className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white shadow"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No photos on this listing yet.
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-gray-700">
+                Add More Photos (up to 5MB each)
               </label>
               <input
-                type="text"
-                placeholder="https://example.com/car-photo.jpg"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
+                type="file"
+                accept="image/png, image/jpeg, image/webp"
+                multiple
+                onChange={handleFileChange}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
+              {selectedFiles.length > 0 ? (
+                <p className="mt-1 text-xs text-gray-500">
+                  {selectedFiles.length} new photo
+                  {selectedFiles.length > 1 ? "s" : ""} selected
+                </p>
+              ) : null}
             </div>
 
             <div>
@@ -328,7 +427,11 @@ export default function EditListingPage() {
               disabled={isSaving}
               className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {isSaving ? "Saving..." : "Save Changes"}
+              {isUploading
+                ? "Uploading photos..."
+                : isSaving
+                ? "Saving..."
+                : "Save Changes"}
             </button>
           </form>
         </div>
