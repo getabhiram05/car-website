@@ -245,25 +245,229 @@ export default function CarcyclopediaDetail() {
 
 
 
-            <div
-              style={{
-                display:"grid",
-                gridTemplateColumns:
-                "repeat(auto-fit,minmax(200px,1fr))",
-                gap:"16px"
-              }}
-            >
+            <h2 style={{ marginTop: "10px", marginBottom: "18px" }}>
+  Overview
+</h2>
 
-              <SpecBox label="Launched" value={car.launch_year}/>
-              <SpecBox label="Current Gen Since" value={car.current_gen_since}/>
-              <SpecBox label="Engine" value={car.engine}/>
-              <SpecBox label="Power" value={car.power}/>
-              <SpecBox label="Mileage" value={car.mileage}/>
-              <SpecBox label="Transmission" value={car.transmission}/>
-              <SpecBox label="Fuel Types" value={car.fuel_types}/>
-              <SpecBox label="Price (New)" value={car.price_range_new}/>
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+    gap: "16px",
+    marginBottom: "35px"
+  }}
+>
+  <SpecBox label="Launch Year" value={car.launch_year}/>
+  <SpecBox label="Current Generation" value={car.current_gen_since}/>
+  <SpecBox label="Category" value={car.category}/>
+  <SpecBox label="Body Type" value={car.body_type}/>
+  <SpecBox label="Segment" value={car.segment}/>
+  <SpecBox label="Manufacturer" value={car.manufacturer}/>
+  <SpecBox label="Country" value={car.country}/>
+  <SpecBox label="Production Status" value={car.production_status}/>
+</div>
 
-            </div>
+<h2 style={{ marginBottom: "18px" }}>
+  Engine & Transmission
+</h2>
+
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+    gap: "16px",
+    marginBottom: "35px"
+  }}
+>
+  <SpecBox label="Engine" value={car.engine}/>
+  <SpecBox label="Displacement" value={car.displacement_cc ? `${car.displacement_cc} cc` : null}/>
+  <SpecBox label="Cylinders" value={car.cylinders}/>
+  <SpecBox label="Power" value={car.power}/>
+  <SpecBox label="Torque" value={car.torque}/>
+  <SpecBox label="Fuel Type" value={car.fuel_types}/>
+  <SpecBox label="Transmission" value={car.transmission}/>
+  <SpecBox label="Drivetrain" value={car.drivetrain}/>
+</div>
+
+<h2 style={{ marginBottom: "18px" }}>
+  Performance
+</h2>
+
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+    gap: "16px",
+    marginBottom: "35px"
+  }}
+>
+  <SpecBox label="Mileage" value={car.mileage}/>
+  <SpecBox label="City Mileage" value={car.city_mileage}/>
+  <SpecBox label="Highway Mileage" value={car.highway_mileage}/>
+  <SpecBox label="Top Speed" value={car.top_speed}/>
+  <SpecBox label="0-100 km/h" value={car.acceleration_0_100}/>
+  <SpecBox label="Fuel Tank" value={car.fuel_tank_capacity}/>
+</div>
+
+<h2 style={{ marginBottom: "18px" }}>
+  Dimensions
+</h2>
+
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
+    gap: "16px",
+    marginBottom: "35px"
+  }}
+>
+  <SpecBox label="Length" value={car.length}/>
+  <SpecBox label="Width" value={car.width}/>
+  <SpecBox label="Height" value={car.height}/>
+  <SpecBox label="Wheelbase" value={car.wheelbase}/>
+  <SpecBox label="Ground Clearance" value={car.ground_clearance}/>
+  <SpecBox label="Boot Space" value={car.boot_space}/>
+  <SpecBox label="Kerb Weight" value={car.kerb_weight}/>
+</div>
+<h2
+  style={{
+    marginBottom:"18px"
+  }}
+>
+  Safety
+</h2>
+
+<div
+  style={{
+    display:"grid",
+    gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
+    gap:"16px",
+    marginBottom:"35px"
+  }}
+>
+  <SpecBox label="Airbags" value={car.airbags}/>
+  <SpecBox label="ABS" value={car.abs}/>
+  <SpecBox label="EBD" value={car.ebd}/>
+  <SpecBox label="ESP" value={car.esp}/>
+  <SpecBox label="Rear Camera" value={car.rear_camera}/>
+  <SpecBox label="Parking Sensors" value={car.parking_sensors}/>
+</div>
+
+
+<h2
+  style={{
+    marginBottom:"18px"
+  }}
+>
+  Features
+</h2>
+
+<div
+  style={{
+    display:"grid",
+    gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
+    gap:"16px",
+    marginBottom:"35px"
+  }}
+>
+  <SpecBox label="Climate Control" value={car.climate_control}/>
+  <SpecBox label="Cruise Control" value={car.cruise_control}/>
+  <SpecBox label="Sunroof" value={car.sunroof}/>
+  <SpecBox label="Android Auto" value={car.android_auto}/>
+  <SpecBox label="Apple CarPlay" value={car.apple_carplay}/>
+  <SpecBox label="Seating Capacity" value={car.seating_capacity}/>
+</div>
+
+
+<h2
+  style={{
+    marginBottom:"18px"
+  }}
+>
+  Pricing & Rivals
+</h2>
+
+<div
+  style={{
+    display:"grid",
+    gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
+    gap:"16px",
+    marginBottom:"35px"
+  }}
+>
+  <SpecBox label="New Price" value={car.price_range_new}/>
+  <SpecBox label="Used Price" value={car.price_range_used}/>
+  <SpecBox label="Rivals" value={car.rivals}/>
+</div>
+
+
+<div
+  style={{
+    display:"grid",
+    gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",
+    gap:"20px",
+    marginBottom:"40px"
+  }}
+>
+
+  <div
+    style={{
+      background:"#ecfdf5",
+      border:"1px solid #10b981",
+      borderRadius:"16px",
+      padding:"20px"
+    }}
+  >
+    <h2
+      style={{
+        marginTop:0,
+        color:"#047857"
+      }}
+    >
+      👍 Pros
+    </h2>
+
+    <p
+      style={{
+        margin:0,
+        lineHeight:"1.7"
+      }}
+    >
+      {car.pros || "N/A"}
+    </p>
+
+  </div>
+
+
+  <div
+    style={{
+      background:"#fef2f2",
+      border:"1px solid #ef4444",
+      borderRadius:"16px",
+      padding:"20px"
+    }}
+  >
+    <h2
+      style={{
+        marginTop:0,
+        color:"#b91c1c"
+      }}
+    >
+      👎 Cons
+    </h2>
+
+    <p
+      style={{
+        margin:0,
+        lineHeight:"1.7"
+      }}
+    >
+      {car.cons || "N/A"}
+    </p>
+
+  </div>
+
+</div>
 
 
 

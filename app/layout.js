@@ -1,8 +1,9 @@
 import "./globals.css";
 import Header from "../components/Header";
+import AiChatWidget from "../components/AiChatWidget";
 
 export const metadata = {
-  title: "CarDekho Style Marketplace",
+  title: "Car Becho - Buy Old Cars",
   description: "Buy and sell used cars across India",
 };
 
@@ -18,6 +19,7 @@ export default function RootLayout({ children }) {
       >
         <Header />
         {children}
+        <AiChatWidget />
       </body>
     </html>
   );

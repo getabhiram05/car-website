@@ -9,19 +9,93 @@ const FALLBACK_IMAGE =
 
 // rows where a HIGHER number is considered "better"
 const SPEC_ROWS = [
+  // Basic Info
   { label: "Category", key: "category" },
+  { label: "Body Type", key: "body_type" },
+  { label: "Segment", key: "segment" },
+  { label: "Manufacturer", key: "manufacturer" },
+  { label: "Country", key: "country" },
   { label: "Launch Year", key: "launch_year" },
   { label: "Current Gen Since", key: "current_gen_since" },
+  { label: "Production Status", key: "production_status" },
+
+  // Engine
   { label: "Engine", key: "engine" },
-  { label: "Power", key: "power", higherIsBetter: true },
-  { label: "Mileage", key: "mileage", higherIsBetter: true },
-  { label: "Transmission", key: "transmission" },
+  { label: "Engine Type", key: "engine_type" },
+  { label: "Displacement", key: "displacement_cc", higherIsBetter: true },
+  { label: "Cylinders", key: "cylinders" },
   { label: "Fuel Types", key: "fuel_types" },
-  { label: "Price Range", key: "price_range_new" },
+  { label: "Power", key: "power", higherIsBetter: true },
+  { label: "Torque", key: "torque", higherIsBetter: true },
+  { label: "Transmission", key: "transmission" },
+  { label: "Drivetrain", key: "drivetrain" },
+
+  // Performance
+  { label: "Top Speed", key: "top_speed", higherIsBetter: true },
+  { label: "0-100 km/h", key: "acceleration_0_100" },
+  { label: "Mileage / Range", key: "mileage", higherIsBetter: true },
+  { label: "City Mileage", key: "city_mileage", higherIsBetter: true },
+  { label: "Highway Mileage", key: "highway_mileage", higherIsBetter: true },
+  { label: "Fuel Tank Capacity", key: "fuel_tank_capacity", higherIsBetter: true },
+
+  // Dimensions
+  { label: "Length", key: "length" },
+  { label: "Width", key: "width" },
+  { label: "Height", key: "height" },
+  { label: "Wheelbase", key: "wheelbase" },
   { label: "Ground Clearance", key: "ground_clearance", higherIsBetter: true },
   { label: "Boot Space", key: "boot_space", higherIsBetter: true },
+  { label: "Kerb Weight", key: "kerb_weight" },
+
+  // Suspension & Brakes
+  { label: "Front Suspension", key: "front_suspension" },
+  { label: "Rear Suspension", key: "rear_suspension" },
+  { label: "Steering Type", key: "steering_type" },
+  { label: "Turning Radius", key: "turning_radius" },
+  { label: "Front Brake", key: "front_brake" },
+  { label: "Rear Brake", key: "rear_brake" },
+  { label: "Tyre Size", key: "tyre_size" },
+  { label: "Wheel Size", key: "wheel_size" },
+
+  // Safety
+  { label: "Airbags", key: "airbags", higherIsBetter: true },
+  { label: "ABS", key: "abs" },
+  { label: "EBD", key: "ebd" },
+  { label: "ESP", key: "esp" },
+  { label: "Traction Control", key: "traction_control" },
+  { label: "Hill Hold", key: "hill_hold" },
+  { label: "Hill Descent Control", key: "hill_descent_control" },
+  { label: "ADAS", key: "adas" },
+  { label: "Lane Keep Assist", key: "lane_keep_assist" },
+  { label: "Adaptive Cruise Control", key: "adaptive_cruise_control" },
+  { label: "Blind Spot Monitor", key: "blind_spot_monitor" },
+  { label: "Rear Camera", key: "rear_camera" },
+  { label: "Parking Sensors", key: "parking_sensors" },
+
+  // Interior
   { label: "Seating Capacity", key: "seating_capacity", higherIsBetter: true },
-  { label: "Safety Rating", key: "safety_rating" }
+  { label: "Seat Material", key: "seat_material" },
+  { label: "Ventilated Seats", key: "ventilated_seats" },
+  { label: "Powered Seats", key: "powered_seats" },
+  { label: "Climate Control", key: "climate_control" },
+  { label: "Cruise Control", key: "cruise_control" },
+  { label: "Sunroof", key: "sunroof" },
+  { label: "Panoramic Sunroof", key: "panoramic_sunroof" },
+  { label: "Ambient Lighting", key: "ambient_lighting" },
+  { label: "Touchscreen", key: "touchscreen" },
+  { label: "Android Auto", key: "android_auto" },
+  { label: "Apple CarPlay", key: "apple_carplay" },
+  { label: "Wireless Charging", key: "wireless_charging" },
+  { label: "Speakers", key: "speakers" },
+
+  // Price
+  { label: "New Price", key: "price_range_new" },
+  { label: "Used Price", key: "price_range_used" },
+
+  // Verdict
+  { label: "Rivals", key: "rivals" },
+  { label: "Pros", key: "pros" },
+  { label: "Cons", key: "cons" }
 ];
 
 // pulls the first number out of a string like "830 PS" or "18 km/l" or "7"
