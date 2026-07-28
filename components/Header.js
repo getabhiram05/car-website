@@ -40,7 +40,10 @@ export default function Header() {
     <header className="border-b border-gray-200 bg-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="text-lg font-bold text-gray-900">
-          CarDekho Style Marketplace
+          Car Becho
+          <span className="ml-2 text-xs font-normal text-gray-500">
+            Buy Old Cars
+          </span>
         </Link>
 
         <nav className="flex items-center gap-4">

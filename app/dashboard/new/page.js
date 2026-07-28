@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabaseClient";
 
@@ -8,6 +8,8 @@ export default function NewListingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [sellerEmail, setSellerEmail] = useState("");
 
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
@@ -22,6 +24,21 @@ export default function NewListingPage() {
   const [description, setDescription] = useState("");
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [isUploading, setIsUploading] = useState(false);
+
+  // new fields
+  const [phone, setPhone] = useState("");
+  const [insuranceValidTill, setInsuranceValidTill] = useState("");
+  const [registrationState, setRegistrationState] = useState("");
+
+  useEffect(() => {
+    async function loadUser() {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setSellerEmail(data.user.email);
+      }
+    }
+    loadUser();
+  }, []);
 
   function handleFileChange(e) {
     const files = Array.from(e.target.files || []);
@@ -67,6 +84,12 @@ export default function NewListingPage() {
       return;
     }
 
+    if (!phone.trim()) {
+      setIsLoading(false);
+      setErrorMessage("Phone number is required.");
+      return;
+    }
+
     let imageUrls = [];
 
     try {
@@ -97,6 +120,9 @@ export default function NewListingPage() {
       description,
       seller: userData.user.email,
       seller_id: userData.user.id,
+      seller_phone: phone,
+      insurance_valid_till: insuranceValidTill || null,
+      registration_state: registrationState,
       images: JSON.stringify(imageUrls),
       features: JSON.stringify([]),
     };
@@ -126,6 +152,32 @@ export default function NewListingPage() {
 
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Registered Email
+                </label>
+                <input
+                  type="email"
+                  disabled
+                  value={sellerEmail}
+                  className="w-full cursor-not-allowed rounded-lg border border-gray-300 bg-gray-100 px-4 py-3 text-gray-500 outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  required
+                  placeholder="10-digit mobile number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                   Make
@@ -251,13 +303,38 @@ export default function NewListingPage() {
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Location
+                  Location (City)
                 </label>
                 <input
                   type="text"
                   required
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Registration State (RTO)
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Gujarat"
+                  value={registrationState}
+                  onChange={(e) => setRegistrationState(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-gray-700">
+                  Insurance Valid Till
+                </label>
+                <input
+                  type="date"
+                  value={insuranceValidTill}
+                  onChange={(e) => setInsuranceValidTill(e.target.value)}
                   className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                 />
               </div>

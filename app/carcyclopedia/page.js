@@ -1,220 +1,501 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase } from "../../lib/supabaseClient";
+import { supabase } from "@/lib/supabaseClient";
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80";
+
 
 export default function Carcyclopedia() {
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selected, setSelected] = useState([]);
+
 
   useEffect(() => {
+
     async function loadCars() {
+
       const { data, error } = await supabase
         .from("carcyclopedia")
         .select("*")
         .order("make", { ascending: true });
 
+
       if (error) {
-        console.error("Error loading carcyclopedia:", error);
+
+        console.error(
+          "Error loading cars:",
+          error
+        );
+
         setLoading(false);
         return;
+
       }
 
-      const carsWithImages = await Promise.all(
-        data.map(async (car) => {
-          try {
-            const response = await fetch(
-              `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
-                car.wiki_title
-              )}`
-            );
-            if (response.ok) {
-              const wikiData = await response.json();
-              return {
-                ...car,
-                image:
-                  wikiData.thumbnail?.source ||
-                  "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80",
-              };
-            }
-          } catch (err) {
-            console.error("Wiki image fetch failed for", car.slug);
-          }
-          return {
-            ...car,
-            image:
-              "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80",
-          };
-        })
-      );
 
-      setCars(carsWithImages);
+      // Show cards instantly
+      const instantCars = data.map((car) => ({
+        ...car,
+        image: car.image_url || FALLBACK_IMAGE
+      }));
+
+
+      setCars(instantCars);
       setLoading(false);
+
+
+
+      // Fetch Wikipedia images in background
+      data.forEach(async (car) => {
+
+        if (car.image_url || !car.wiki_title) {
+          return;
+        }
+
+
+        try {
+
+          const response = await fetch(
+            `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(
+              car.wiki_title
+            )}`
+          );
+
+
+          if (!response.ok) return;
+
+
+          const wikiData = await response.json();
+
+
+          const wikiImage =
+            wikiData.thumbnail?.source;
+
+
+          if (wikiImage) {
+
+            setCars((currentCars) =>
+
+              currentCars.map((item) =>
+
+                item.slug === car.slug
+                  ? {
+                      ...item,
+                      image: wikiImage
+                    }
+                  : item
+
+              )
+
+            );
+
+          }
+
+
+        } catch (err) {
+
+          console.log(
+            "Wikipedia image failed:",
+            car.slug
+          );
+
+        }
+
+
+      });
+
+
     }
 
+
     loadCars();
+
+
   }, []);
+
+
 
   const categories = [
     "All",
-    ...Array.from(new Set(cars.map((car) => car.category))),
+    ...new Set(
+      cars
+        .map((car) => car.category)
+        .filter(Boolean)
+    )
   ];
 
-  const filteredCars = cars.filter((car) => {
-    const matchesSearch =
-      car.make.toLowerCase().includes(search.toLowerCase()) ||
-      car.model.toLowerCase().includes(search.toLowerCase());
 
-    const matchesCategory = category === "All" || car.category === category;
+
+  const filteredCars = cars.filter((car) => {
+
+    const text = search.toLowerCase();
+
+
+    const matchesSearch =
+      car.make?.toLowerCase().includes(text) ||
+      car.model?.toLowerCase().includes(text);
+
+
+    const matchesCategory =
+      category === "All" ||
+      car.category === category;
+
 
     return matchesSearch && matchesCategory;
+
   });
 
+
+  function toggleSelect(slug) {
+
+    setSelected((current) => {
+
+      if (current.includes(slug)) {
+        return current.filter((s) => s !== slug);
+      }
+
+      if (current.length >= 4) {
+        alert("You can compare up to 4 cars at a time.");
+        return current;
+      }
+
+      return [...current, slug];
+
+    });
+
+  }
+
+
   return (
+
     <main
       style={{
-        backgroundColor: "#f8fafc",
-        minHeight: "100vh",
-        color: "#0f172a",
-        padding: "40px 20px",
+        background:"#f8fafc",
+        minHeight:"100vh",
+        color:"#0f172a",
+        padding:"40px 20px",
+        paddingBottom: selected.length > 0 ? "110px" : "40px"
       }}
     >
-      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <div style={{ marginBottom: "30px" }}>
-          <h1 style={{ fontSize: "36px", margin: "0 0 10px 0" }}>
-            Carcyclopedia
-          </h1>
-          <p style={{ margin: 0, color: "#475569", fontSize: "16px" }}>
-            An enthusiast&apos;s guide to popular cars in India — specs,
-            history, and everything in between.
-          </p>
-        </div>
 
-        <div
+      <div
+        style={{
+          maxWidth:"1200px",
+          margin:"auto"
+        }}
+      >
+
+        <h1
           style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "12px",
-            marginBottom: "30px",
+            fontSize:"36px",
+            marginBottom:"10px"
           }}
         >
-          <input
-            placeholder="Search make or model"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            style={{
-              flex: "1 1 250px",
-              padding: "14px 16px",
-              borderRadius: "12px",
-              border: "1px solid #cbd5e1",
-              fontSize: "15px",
-              outline: "none",
-            }}
-          />
-        </div>
+          Carcyclopedia
+        </h1>
+
+
+        <p
+          style={{
+            color:"#475569",
+            marginBottom:"30px"
+          }}
+        >
+          An enthusiast's guide to popular cars in India —
+          specs, history, and everything in between.
+        </p>
+
+
+
+        <input
+          placeholder="Search make or model"
+          value={search}
+          onChange={(e)=>setSearch(e.target.value)}
+          style={{
+            width:"100%",
+            padding:"14px 16px",
+            borderRadius:"12px",
+            border:"1px solid #cbd5e1",
+            marginBottom:"25px"
+          }}
+        />
+
+
 
         {!loading && (
+
           <div
             style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "10px",
-              marginBottom: "30px",
+              display:"flex",
+              gap:"10px",
+              flexWrap:"wrap",
+              marginBottom:"30px"
             }}
           >
-            {categories.map((cat) => (
+
+            {categories.map((cat)=>(
+
               <button
                 key={cat}
-                onClick={() => setCategory(cat)}
+                onClick={()=>setCategory(cat)}
                 style={{
-                  padding: "10px 18px",
-                  borderRadius: "999px",
-                  border:
+                  padding:"10px 18px",
+                  borderRadius:"999px",
+                  border:"1px solid #cbd5e1",
+                  cursor:"pointer",
+                  background:
                     category === cat
-                      ? "1px solid #2563eb"
-                      : "1px solid #cbd5e1",
-                  backgroundColor: category === cat ? "#2563eb" : "white",
-                  color: category === cat ? "white" : "#0f172a",
-                  fontWeight: "600",
-                  fontSize: "14px",
-                  cursor: "pointer",
+                    ? "#2563eb"
+                    : "white",
+                  color:
+                    category === cat
+                    ? "white"
+                    : "#0f172a"
                 }}
               >
                 {cat}
               </button>
+
             ))}
+
           </div>
+
         )}
+
+
+
 
         {loading ? (
-          <p style={{ color: "#475569" }}>Loading cars...</p>
+
+          <p>
+            Loading cars...
+          </p>
+
+
         ) : filteredCars.length === 0 ? (
-          <p style={{ color: "#475569" }}>No cars match your search.</p>
+
+          <p>
+            No cars found.
+          </p>
+
+
         ) : (
+
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-              gap: "20px",
+              display:"grid",
+              gridTemplateColumns:
+                "repeat(auto-fit,minmax(260px,1fr))",
+              gap:"20px"
             }}
           >
-            {filteredCars.map((car) => (
-              <a
-                key={car.slug}
-                href={`/carcyclopedia/${car.slug}`}
-                style={{
-                  textDecoration: "none",
-                  color: "inherit",
-                  backgroundColor: "white",
-                  borderRadius: "20px",
-                  overflow: "hidden",
-                  boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-                  border: "1px solid #e2e8f0",
-                  display: "block",
-                }}
-              >
-                <img
-                  src={car.image}
-                  alt={`${car.make} ${car.model}`}
-                  style={{
-                    width: "100%",
-                    height: "180px",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
 
-                <div style={{ padding: "16px" }}>
-                  <div
+            {filteredCars.map((car)=>{
+
+              const isSelected = selected.includes(car.slug);
+
+              return (
+
+                <div
+                  key={car.slug}
+                  style={{
+                    position:"relative",
+                    background:"white",
+                    borderRadius:"20px",
+                    overflow:"hidden",
+                    border: isSelected
+                      ? "2px solid #2563eb"
+                      : "1px solid #e2e8f0",
+                    boxShadow:
+                      "0 10px 30px rgba(15,23,42,.08)"
+                  }}
+                >
+
+                  <label
+                    onClick={(e) => e.stopPropagation()}
                     style={{
-                      display: "inline-block",
-                      backgroundColor: "#eff6ff",
-                      color: "#1d4ed8",
-                      fontSize: "12px",
-                      fontWeight: "700",
-                      padding: "4px 10px",
-                      borderRadius: "999px",
-                      marginBottom: "10px",
+                      position:"absolute",
+                      top:"12px",
+                      left:"12px",
+                      zIndex:2,
+                      background:"white",
+                      borderRadius:"8px",
+                      padding:"6px 10px",
+                      display:"flex",
+                      alignItems:"center",
+                      gap:"6px",
+                      fontSize:"13px",
+                      fontWeight:"600",
+                      boxShadow:"0 2px 8px rgba(15,23,42,.15)",
+                      cursor:"pointer"
                     }}
                   >
-                    {car.category}
-                  </div>
+                    <input
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() => toggleSelect(car.slug)}
+                    />
+                    Compare
+                  </label>
 
-                  <h3 style={{ margin: "0 0 6px 0", fontSize: "20px" }}>
-                    {car.make} {car.model}
-                  </h3>
 
-                  <p style={{ margin: 0, color: "#475569", fontSize: "14px" }}>
-                    Since {car.launch_year} • {car.mileage}
-                  </p>
+                  <a
+                    href={`/carcyclopedia/${car.slug}`}
+                    style={{
+                      textDecoration:"none",
+                      color:"inherit",
+                      display:"block"
+                    }}
+                  >
+
+                    <img
+                      src={car.image}
+                      alt={`${car.make} ${car.model}`}
+                      loading="lazy"
+                      style={{
+                        width:"100%",
+                        height:"180px",
+                        objectFit:"cover"
+                      }}
+                    />
+
+
+                    <div
+                      style={{
+                        padding:"16px"
+                      }}
+                    >
+
+                      <span
+                        style={{
+                          background:"#eff6ff",
+                          color:"#1d4ed8",
+                          padding:"4px 10px",
+                          borderRadius:"999px",
+                          fontSize:"12px",
+                          fontWeight:"700"
+                        }}
+                      >
+                        {car.category}
+                      </span>
+
+
+                      <h3
+                        style={{
+                          fontSize:"20px",
+                          margin:"12px 0 6px"
+                        }}
+                      >
+                        {car.make} {car.model}
+                      </h3>
+
+
+                      <p
+                        style={{
+                          color:"#475569",
+                          margin:0
+                        }}
+                      >
+                        Since {car.launch_year} • {car.mileage}
+                      </p>
+
+                    </div>
+
+
+                  </a>
+
+
                 </div>
-              </a>
-            ))}
+
+              );
+
+            })}
+
           </div>
+
         )}
+
+
       </div>
+
+
+      {selected.length > 0 && (
+
+        <div
+          style={{
+            position:"fixed",
+            bottom:0,
+            left:0,
+            right:0,
+            background:"#0f172a",
+            color:"white",
+            padding:"16px 20px",
+            display:"flex",
+            alignItems:"center",
+            justifyContent:"space-between",
+            flexWrap:"wrap",
+            gap:"12px",
+            zIndex:10
+          }}
+        >
+
+          <span>
+            {selected.length} car{selected.length > 1 ? "s" : ""} selected
+            {selected.length < 2 ? " — pick at least 2 to compare" : ""}
+          </span>
+
+
+          <div style={{ display:"flex", gap:"10px" }}>
+
+            <button
+              onClick={() => setSelected([])}
+              style={{
+                padding:"10px 16px",
+                borderRadius:"10px",
+                border:"1px solid #475569",
+                background:"transparent",
+                color:"white",
+                cursor:"pointer"
+              }}
+            >
+              Clear
+            </button>
+
+
+            <a
+              href={
+                selected.length >= 2
+                  ? `/carcyclopedia/compare?slugs=${selected.join(",")}`
+                  : undefined
+              }
+              style={{
+                padding:"10px 16px",
+                borderRadius:"10px",
+                background: selected.length >= 2 ? "#2563eb" : "#334155",
+                color:"white",
+                textDecoration:"none",
+                pointerEvents: selected.length >= 2 ? "auto" : "none",
+                cursor: selected.length >= 2 ? "pointer" : "not-allowed"
+              }}
+            >
+              Compare Now
+            </a>
+
+          </div>
+
+        </div>
+
+      )}
+
+
     </main>
+
   );
+
 }
