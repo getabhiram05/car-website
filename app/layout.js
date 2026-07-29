@@ -3,7 +3,7 @@ import Header from "../components/Header";
 import AiChatWidget from "../components/AiChatWidget";
 
 export const metadata = {
-  title: "Car Becho - Buy Old Cars",
+  title: "Carvora - Search. Research. Drive.",
   description: "Buy and sell used cars across India",
 };
 

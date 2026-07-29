@@ -2,11 +2,32 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
+import { NumberTicker } from "@/components/ui/number-ticker";
+import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
+import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { BlurFade } from "@/components/ui/blur-fade";
+import { Marquee } from "@/components/ui/marquee";
+
+const BRANDS = [
+  "Maruti Suzuki",
+  "Hyundai",
+  "Tata",
+  "Mahindra",
+  "Honda",
+  "Toyota",
+  "Kia",
+  "Skoda",
+  "Volkswagen",
+  "Renault",
+  "Nissan",
+  "BMW",
+];
 
 export default function Home() {
   const [homeSearch, setHomeSearch] = useState("");
   const [featuredCars, setFeaturedCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [totalCars, setTotalCars] = useState(0);
 
   useEffect(() => {
     async function loadFeaturedCars() {
@@ -24,7 +45,18 @@ export default function Home() {
       setLoading(false);
     }
 
+    async function loadTotalCars() {
+      const { count, error } = await supabase
+        .from("cars")
+        .select("*", { count: "exact", head: true });
+
+      if (!error && typeof count === "number") {
+        setTotalCars(count);
+      }
+    }
+
     loadFeaturedCars();
+    loadTotalCars();
   }, []);
 
   function getFirstImage(car) {
@@ -110,7 +142,11 @@ export default function Home() {
                 fontWeight: "800",
               }}
             >
-              Buy and sell used cars with confidence
+              Buy and sell{" "}
+              <AnimatedGradientText className="text-inherit">
+                used cars
+              </AnimatedGradientText>{" "}
+              with confidence
             </h1>
 
             <p
@@ -131,22 +167,17 @@ export default function Home() {
                 display: "flex",
                 flexWrap: "wrap",
                 gap: "12px",
+                alignItems: "center",
               }}
             >
-              <a
-                href="/cars"
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "#2563eb",
-                  color: "white",
-                  textDecoration: "none",
-                  padding: "14px 22px",
-                  borderRadius: "12px",
-                  fontSize: "16px",
-                  fontWeight: "700",
-                }}
-              >
-                Browse Cars
+              <a href="/cars" style={{ textDecoration: "none" }}>
+                <ShimmerButton
+                  shimmerColor="#93c5fd"
+                  background="#2563eb"
+                  className="px-6 py-3 text-base font-bold"
+                >
+                  Browse Cars
+                </ShimmerButton>
               </a>
 
               <a
@@ -248,6 +279,62 @@ export default function Home() {
         </div>
       </section>
 
+      <section style={{ padding: "10px 20px 20px 20px" }}>
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: "16px",
+          }}
+        >
+          <div style={statCardStyle}>
+            <div style={statNumberStyle}>
+              <NumberTicker value={totalCars} />+
+            </div>
+            <div style={statLabelStyle}>Cars Listed</div>
+          </div>
+
+          <div style={statCardStyle}>
+            <div style={statNumberStyle}>
+              <NumberTicker value={40} />+
+            </div>
+            <div style={statLabelStyle}>Brands</div>
+          </div>
+        </div>
+      </section>
+
+      <section style={{ padding: "10px 20px 30px 20px" }}>
+        <div
+          style={{
+            maxWidth: "1200px",
+            margin: "0 auto",
+            backgroundColor: "white",
+            borderRadius: "20px",
+            border: "1px solid #e2e8f0",
+            padding: "16px 0",
+          }}
+        >
+          <Marquee pauseOnHover className="[--duration:25s]">
+            {BRANDS.map((brand) => (
+              <span
+                key={brand}
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  color: "#475569",
+                  padding: "0 28px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {brand}
+              </span>
+            ))}
+          </Marquee>
+        </div>
+      </section>
+
       <section style={{ padding: "50px 20px 20px 20px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
           <div
@@ -298,125 +385,126 @@ export default function Home() {
                 gap: "20px",
               }}
             >
-              {featuredCars.map((car) => (
-                <div
-                  key={car.id}
-                  style={{
-                    backgroundColor: "white",
-                    borderRadius: "20px",
-                    overflow: "hidden",
-                    boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-                    border: "1px solid #e2e8f0",
-                  }}
-                >
-                  <img
-                    src={getFirstImage(car)}
-                    alt={`${car.make} ${car.model}`}
+              {featuredCars.map((car, index) => (
+                <BlurFade key={car.id} delay={0.1 + index * 0.08} inView>
+                  <div
                     style={{
-                      width: "100%",
-                      height: "200px",
-                      objectFit: "cover",
-                      display: "block",
+                      backgroundColor: "white",
+                      borderRadius: "20px",
+                      overflow: "hidden",
+                      boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
+                      border: "1px solid #e2e8f0",
                     }}
-                  />
-
-                  <div style={{ padding: "18px" }}>
-                    <h3 style={{ margin: "0 0 10px 0", fontSize: "22px" }}>
-                      {car.make} {car.model}
-                    </h3>
-
-                    <div
+                  >
+                    <img
+                      src={getFirstImage(car)}
+                      alt={`${car.make} ${car.model}`}
                       style={{
-                        fontSize: "14px",
-                        color: "#475569",
-                        marginBottom: "10px",
+                        width: "100%",
+                        height: "200px",
+                        objectFit: "cover",
+                        display: "block",
                       }}
-                    >
-                      {car.year} • {car.fuel} • {car.transmission}
-                    </div>
+                    />
 
-                    <div
-                      style={{
-                        fontSize: "26px",
-                        fontWeight: "800",
-                        marginBottom: "10px",
-                      }}
-                    >
-                      ₹{Number(car.price).toLocaleString("en-IN")}
-                    </div>
+                    <div style={{ padding: "18px" }}>
+                      <h3 style={{ margin: "0 0 10px 0", fontSize: "22px" }}>
+                        {car.make} {car.model}
+                      </h3>
 
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: "10px",
-                        marginBottom: "16px",
-                        color: "#334155",
-                        fontSize: "14px",
-                      }}
-                    >
                       <div
                         style={{
-                          backgroundColor: "#f8fafc",
-                          padding: "10px",
-                          borderRadius: "12px",
+                          fontSize: "14px",
+                          color: "#475569",
+                          marginBottom: "10px",
                         }}
                       >
-                        <strong>Mileage</strong>
-                        <br />
-                        {Number(car.mileage).toLocaleString("en-IN")} km
+                        {car.year} • {car.fuel} • {car.transmission}
                       </div>
 
                       <div
                         style={{
-                          backgroundColor: "#f8fafc",
-                          padding: "10px",
-                          borderRadius: "12px",
+                          fontSize: "26px",
+                          fontWeight: "800",
+                          marginBottom: "10px",
                         }}
                       >
-                        <strong>Location</strong>
-                        <br />
-                        {car.location}
+                        ₹{Number(car.price).toLocaleString("en-IN")}
                       </div>
-                    </div>
 
-                    <div style={{ display: "flex", gap: "10px" }}>
-                      <a
-                        href={`/cars/${car.id}`}
+                      <div
                         style={{
-                          flex: 1,
-                          display: "inline-block",
-                          backgroundColor: "#2563eb",
-                          color: "white",
-                          textDecoration: "none",
-                          padding: "12px",
-                          borderRadius: "12px",
-                          fontWeight: "700",
-                          textAlign: "center",
+                          display: "grid",
+                          gridTemplateColumns: "1fr 1fr",
+                          gap: "10px",
+                          marginBottom: "16px",
+                          color: "#334155",
+                          fontSize: "14px",
                         }}
                       >
-                        View Details
-                      </a>
+                        <div
+                          style={{
+                            backgroundColor: "#f8fafc",
+                            padding: "10px",
+                            borderRadius: "12px",
+                          }}
+                        >
+                          <strong>Mileage</strong>
+                          <br />
+                          {Number(car.mileage).toLocaleString("en-IN")} km
+                        </div>
 
-                      <button
-                        type="button"
-                        onClick={() => handleFeaturedCompare(car.id)}
-                        style={{
-                          flex: 1,
-                          backgroundColor: "#eff6ff",
-                          color: "#1d4ed8",
-                          border: "none",
-                          padding: "12px",
-                          borderRadius: "12px",
-                          fontWeight: "700",
-                          cursor: "pointer",
-                        }}
-                      >
-                        Compare
-                      </button>
+                        <div
+                          style={{
+                            backgroundColor: "#f8fafc",
+                            padding: "10px",
+                            borderRadius: "12px",
+                          }}
+                        >
+                          <strong>Location</strong>
+                          <br />
+                          {car.location}
+                        </div>
+                      </div>
+
+                      <div style={{ display: "flex", gap: "10px" }}>
+                        <a
+                          href={`/cars/${car.id}`}
+                          style={{
+                            flex: 1,
+                            display: "inline-block",
+                            backgroundColor: "#2563eb",
+                            color: "white",
+                            textDecoration: "none",
+                            padding: "12px",
+                            borderRadius: "12px",
+                            fontWeight: "700",
+                            textAlign: "center",
+                          }}
+                        >
+                          View Details
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => handleFeaturedCompare(car.id)}
+                          style={{
+                            flex: 1,
+                            backgroundColor: "#eff6ff",
+                            color: "#1d4ed8",
+                            border: "none",
+                            padding: "12px",
+                            borderRadius: "12px",
+                            fontWeight: "700",
+                            cursor: "pointer",
+                          }}
+                        >
+                          Compare
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </BlurFade>
               ))}
             </div>
           )}
@@ -516,6 +604,28 @@ const inputStyle = {
   fontSize: "15px",
   outline: "none",
   backgroundColor: "white",
+};
+
+const statCardStyle = {
+  backgroundColor: "white",
+  borderRadius: "16px",
+  padding: "18px",
+  textAlign: "center",
+  boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
+  border: "1px solid #e2e8f0",
+};
+
+const statNumberStyle = {
+  fontSize: "28px",
+  fontWeight: "800",
+  color: "#1d4ed8",
+  marginBottom: "4px",
+};
+
+const statLabelStyle = {
+  fontSize: "13px",
+  color: "#475569",
+  fontWeight: "600",
 };
 
 const infoCardStyle = {
