@@ -76,6 +76,15 @@ export default async function ComparePage({ searchParams }) {
     return value;
   }
 
+  function formatDate(value) {
+    if (!value) return "N/A";
+    return new Date(value).toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  }
+
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
@@ -213,6 +222,76 @@ export default async function ComparePage({ searchParams }) {
                     className="border-b border-gray-200 px-4 py-4 text-sm text-gray-900"
                   >
                     {getValue(car.transmission)}
+                  </td>
+                ))}
+              </tr>
+
+              <tr className="bg-gray-50">
+                <td className="border-b border-gray-200 px-4 py-4 text-sm font-semibold text-gray-700">
+                  Owner
+                </td>
+                {compareCars.map((car) => (
+                  <td
+                    key={`${car.id}-owner`}
+                    className="border-b border-gray-200 px-4 py-4 text-sm text-gray-900"
+                  >
+                    {getValue(car.owner)}
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td className="border-b border-gray-200 px-4 py-4 text-sm font-semibold text-gray-700">
+                  Color
+                </td>
+                {compareCars.map((car) => (
+                  <td
+                    key={`${car.id}-color`}
+                    className="border-b border-gray-200 px-4 py-4 text-sm text-gray-900"
+                  >
+                    {getValue(car.color)}
+                  </td>
+                ))}
+              </tr>
+
+              <tr className="bg-gray-50">
+                <td className="border-b border-gray-200 px-4 py-4 text-sm font-semibold text-gray-700">
+                  Registration State
+                </td>
+                {compareCars.map((car) => (
+                  <td
+                    key={`${car.id}-regstate`}
+                    className="border-b border-gray-200 px-4 py-4 text-sm text-gray-900"
+                  >
+                    {getValue(car.registration_state)}
+                  </td>
+                ))}
+              </tr>
+
+              <tr>
+                <td className="border-b border-gray-200 px-4 py-4 text-sm font-semibold text-gray-700">
+                  Insurance Valid Till
+                </td>
+                {compareCars.map((car) => (
+                  <td
+                    key={`${car.id}-insurance`}
+                    className="border-b border-gray-200 px-4 py-4 text-sm text-gray-900"
+                  >
+                    {formatDate(car.insurance_valid_till)}
+                  </td>
+                ))}
+              </tr>
+
+              <tr className="bg-gray-50">
+                <td className="border-b border-gray-200 px-4 py-4 text-sm font-semibold text-gray-700">
+                  Contact Number
+                </td>
+                {compareCars.map((car) => (
+                  <td
+                    key={`${car.id}-phone`}
+                    className="border-b border-gray-200 px-4 py-4 text-sm text-gray-900"
+                  >
+                    {getValue(car.seller_phone)}
                   </td>
                 ))}
               </tr>

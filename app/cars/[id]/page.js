@@ -28,6 +28,14 @@ export default async function CarDetailPage({ params }) {
     features: selectedCarRaw.features ? JSON.parse(selectedCarRaw.features) : [],
   };
 
+  const formattedInsurance = selectedCar.insurance_valid_till
+    ? new Date(selectedCar.insurance_valid_till).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "N/A";
+
   return (
     <main style={{ backgroundColor: "#f8fafc", minHeight: "100vh", padding: "40px 20px" }}>
       <div
@@ -98,6 +106,30 @@ export default async function CarDetailPage({ params }) {
             </div>
 
             <div style={detailBoxStyle}>
+              <strong>Owner</strong>
+              <br />
+              {selectedCar.owner || "N/A"}
+            </div>
+
+            <div style={detailBoxStyle}>
+              <strong>Color</strong>
+              <br />
+              {selectedCar.color || "N/A"}
+            </div>
+
+            <div style={detailBoxStyle}>
+              <strong>Registration State</strong>
+              <br />
+              {selectedCar.registration_state || "N/A"}
+            </div>
+
+            <div style={detailBoxStyle}>
+              <strong>Insurance Valid Till</strong>
+              <br />
+              {formattedInsurance}
+            </div>
+
+            <div style={detailBoxStyle}>
               <strong>Location</strong>
               <br />
               {selectedCar.location}
@@ -107,6 +139,12 @@ export default async function CarDetailPage({ params }) {
               <strong>Seller</strong>
               <br />
               {selectedCar.seller}
+            </div>
+
+            <div style={detailBoxStyle}>
+              <strong>Contact Number</strong>
+              <br />
+              {selectedCar.seller_phone || "N/A"}
             </div>
           </div>
 
@@ -120,9 +158,7 @@ export default async function CarDetailPage({ params }) {
           </div>
 
           <div>
-            <h2 style={{ fontSize: "24px", marginBottom: "10px", color: "#0f172a" }}>
-              Key Features
-            </h2>
+            
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
               {selectedCar.features && selectedCar.features.map((feature) => (
