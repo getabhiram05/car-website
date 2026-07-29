@@ -95,53 +95,18 @@ export default function Home() {
   }
 
   return (
-    <main
-      style={{
-        backgroundColor: "#f8fafc",
-        minHeight: "100vh",
-        color: "#0f172a",
-      }}
-    >
-      <section
-        style={{
-          background: "linear-gradient(135deg, #0f172a, #1e293b)",
-          color: "white",
-          padding: "60px 20px",
-        }}
-      >
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "30px",
-            alignItems: "center",
-          }}
-        >
+    <main className="min-h-screen bg-[#05070d] text-slate-100">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#0b1220] to-[#05070d] px-5 py-16 sm:py-20">
+        <div className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
+
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <div>
-            <div
-              style={{
-                display: "inline-block",
-                backgroundColor: "#1d4ed8",
-                padding: "8px 14px",
-                borderRadius: "999px",
-                fontSize: "14px",
-                fontWeight: "600",
-                marginBottom: "18px",
-              }}
-            >
-              India&apos;s Modern Car Marketplace
+            <div className="mb-5 inline-block rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-1.5 text-sm font-semibold text-cyan-300">
+              India&apos;s modern car marketplace
             </div>
 
-            <h1
-              style={{
-                fontSize: "clamp(32px, 6vw, 56px)",
-                lineHeight: "1.1",
-                margin: "0 0 16px 0",
-                fontWeight: "800",
-              }}
-            >
+            <h1 className="mb-4 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
               Buy and sell{" "}
               <AnimatedGradientText className="text-inherit">
                 used cars
@@ -149,31 +114,16 @@ export default function Home() {
               with confidence
             </h1>
 
-            <p
-              style={{
-                fontSize: "18px",
-                lineHeight: "1.7",
-                color: "#cbd5e1",
-                marginBottom: "24px",
-                maxWidth: "600px",
-              }}
-            >
+            <p className="mb-6 max-w-xl text-lg leading-relaxed text-slate-400">
               Browse popular cars in India, compare prices, view details, and
               connect buyers with sellers on one simple platform.
             </p>
 
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "12px",
-                alignItems: "center",
-              }}
-            >
-              <a href="/cars" style={{ textDecoration: "none" }}>
+            <div className="flex flex-wrap items-center gap-3">
+              <a href="/cars">
                 <ShimmerButton
-                  shimmerColor="#93c5fd"
-                  background="#2563eb"
+                  shimmerColor="#67e8f9"
+                  background="#0891b2"
                   className="px-6 py-3 text-base font-bold"
                 >
                   Browse Cars
@@ -182,47 +132,25 @@ export default function Home() {
 
               <a
                 href="#seller-section"
-                style={{
-                  display: "inline-block",
-                  backgroundColor: "white",
-                  color: "#0f172a",
-                  textDecoration: "none",
-                  padding: "14px 22px",
-                  borderRadius: "12px",
-                  fontSize: "16px",
-                  fontWeight: "700",
-                }}
+                className="rounded-xl border border-slate-700 bg-slate-900/60 px-5 py-3 text-base font-bold text-slate-100 backdrop-blur transition hover:bg-slate-800/60"
               >
                 Sell Your Car
               </a>
             </div>
           </div>
 
-          <div
-            style={{
-              backgroundColor: "white",
-              borderRadius: "24px",
-              padding: "20px",
-              boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
-            }}
-          >
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-5 shadow-2xl shadow-black/40 backdrop-blur">
             <img
               src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80"
               alt="Car"
-              style={{
-                width: "100%",
-                height: "280px",
-                objectFit: "cover",
-                borderRadius: "18px",
-                display: "block",
-              }}
+              className="block h-64 w-full rounded-2xl object-cover sm:h-72"
             />
 
-            <div style={{ paddingTop: "16px", color: "#0f172a" }}>
-              <h3 style={{ margin: "0 0 8px 0", fontSize: "24px" }}>
+            <div className="pt-4">
+              <h3 className="mb-2 text-2xl font-bold text-white">
                 Find the right car faster
               </h3>
-              <p style={{ margin: 0, color: "#475569", lineHeight: "1.6" }}>
+              <p className="m-0 leading-relaxed text-slate-400">
                 Search by budget, make, year, fuel type, and location with a
                 clean mobile-friendly experience.
               </p>
@@ -231,27 +159,13 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ padding: "24px 20px", marginTop: "-30px" }}>
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            backgroundColor: "white",
-            borderRadius: "20px",
-            padding: "20px",
-            boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: "14px",
-            }}
-          >
+      {/* Search bar */}
+      <section className="px-5 pt-6">
+        <div className="mx-auto -mt-10 max-w-6xl rounded-2xl border border-slate-800 bg-slate-900/70 p-5 shadow-xl shadow-black/30 backdrop-blur">
+          <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-[1fr_auto]">
             <input
               placeholder="Search make or model"
-              style={inputStyle}
+              className="w-full rounded-xl border border-slate-700 bg-slate-950/60 px-4 py-3.5 text-base text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-500"
               value={homeSearch}
               onChange={(e) => setHomeSearch(e.target.value)}
               onKeyDown={handleSearchKeyDown}
@@ -260,18 +174,7 @@ export default function Home() {
             <button
               type="button"
               onClick={handleSearch}
-              style={{
-                display: "inline-block",
-                backgroundColor: "#0f172a",
-                color: "white",
-                border: "none",
-                borderRadius: "12px",
-                padding: "14px 16px",
-                fontSize: "16px",
-                fontWeight: "700",
-                textAlign: "center",
-                cursor: "pointer",
-              }}
+              className="rounded-xl bg-cyan-500 px-6 py-3.5 text-base font-bold text-slate-950 transition hover:bg-cyan-400"
             >
               Search Cars
             </button>
@@ -279,54 +182,37 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ padding: "10px 20px 20px 20px" }}>
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "16px",
-          }}
-        >
-          <div style={statCardStyle}>
-            <div style={statNumberStyle}>
+      {/* Stats */}
+      <section className="px-5 py-6">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 text-center backdrop-blur">
+            <div className="mb-1 text-3xl font-extrabold text-cyan-400">
               <NumberTicker value={totalCars} />+
             </div>
-            <div style={statLabelStyle}>Cars Listed</div>
+            <div className="text-sm font-semibold text-slate-400">
+              Cars Listed
+            </div>
           </div>
 
-          <div style={statCardStyle}>
-            <div style={statNumberStyle}>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 text-center backdrop-blur">
+            <div className="mb-1 text-3xl font-extrabold text-cyan-400">
               <NumberTicker value={40} />+
             </div>
-            <div style={statLabelStyle}>Brands</div>
+            <div className="text-sm font-semibold text-slate-400">
+              Brands
+            </div>
           </div>
         </div>
       </section>
 
-      <section style={{ padding: "10px 20px 30px 20px" }}>
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            backgroundColor: "white",
-            borderRadius: "20px",
-            border: "1px solid #e2e8f0",
-            padding: "16px 0",
-          }}
-        >
+      {/* Brand marquee */}
+      <section className="px-5 pb-8">
+        <div className="mx-auto max-w-6xl rounded-2xl border border-slate-800 bg-slate-900/40 py-4 backdrop-blur">
           <Marquee pauseOnHover className="[--duration:25s]">
             {BRANDS.map((brand) => (
               <span
                 key={brand}
-                style={{
-                  fontSize: "16px",
-                  fontWeight: "700",
-                  color: "#475569",
-                  padding: "0 28px",
-                  whiteSpace: "nowrap",
-                }}
+                className="whitespace-nowrap px-7 text-base font-bold text-slate-400"
               >
                 {brand}
               </span>
@@ -335,152 +221,73 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ padding: "50px 20px 20px 20px" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "16px",
-              flexWrap: "wrap",
-              marginBottom: "20px",
-            }}
-          >
+      {/* Featured cars */}
+      <section className="px-5 py-10">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h2 style={{ margin: "0 0 8px 0", fontSize: "32px" }}>
+              <h2 className="mb-2 text-3xl font-extrabold text-white">
                 Featured Cars
               </h2>
-              <p style={{ margin: 0, color: "#475569" }}>
+              <p className="m-0 text-slate-400">
                 Popular used cars from trusted sellers
               </p>
             </div>
 
             <a
               href="/cars"
-              style={{
-                display: "inline-block",
-                backgroundColor: "transparent",
-                color: "#0f172a",
-                textDecoration: "none",
-                border: "1px solid #cbd5e1",
-                padding: "12px 16px",
-                borderRadius: "12px",
-                fontWeight: "700",
-              }}
+              className="rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 font-bold text-slate-100 backdrop-blur transition hover:bg-slate-800/60"
             >
               View All Listings
             </a>
           </div>
 
           {loading ? (
-            <p style={{ color: "#475569" }}>Loading cars...</p>
+            <p className="text-slate-400">Loading cars...</p>
           ) : featuredCars.length === 0 ? (
-            <p style={{ color: "#475569" }}>No cars found yet.</p>
+            <p className="text-slate-400">No cars found yet.</p>
           ) : (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-                gap: "20px",
-              }}
-            >
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {featuredCars.map((car, index) => (
                 <BlurFade key={car.id} delay={0.1 + index * 0.08} inView>
-                  <div
-                    style={{
-                      backgroundColor: "white",
-                      borderRadius: "20px",
-                      overflow: "hidden",
-                      boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-                      border: "1px solid #e2e8f0",
-                    }}
-                  >
+                  <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 shadow-xl shadow-black/30 backdrop-blur">
                     <img
                       src={getFirstImage(car)}
                       alt={`${car.make} ${car.model}`}
-                      style={{
-                        width: "100%",
-                        height: "200px",
-                        objectFit: "cover",
-                        display: "block",
-                      }}
+                      className="block h-48 w-full object-cover"
                     />
 
-                    <div style={{ padding: "18px" }}>
-                      <h3 style={{ margin: "0 0 10px 0", fontSize: "22px" }}>
+                    <div className="p-5">
+                      <h3 className="mb-2 text-xl font-bold text-white">
                         {car.make} {car.model}
                       </h3>
 
-                      <div
-                        style={{
-                          fontSize: "14px",
-                          color: "#475569",
-                          marginBottom: "10px",
-                        }}
-                      >
+                      <div className="mb-3 text-sm text-slate-400">
                         {car.year} • {car.fuel} • {car.transmission}
                       </div>
 
-                      <div
-                        style={{
-                          fontSize: "26px",
-                          fontWeight: "800",
-                          marginBottom: "10px",
-                        }}
-                      >
+                      <div className="mb-3 text-2xl font-extrabold text-white">
                         ₹{Number(car.price).toLocaleString("en-IN")}
                       </div>
 
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr",
-                          gap: "10px",
-                          marginBottom: "16px",
-                          color: "#334155",
-                          fontSize: "14px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            backgroundColor: "#f8fafc",
-                            padding: "10px",
-                            borderRadius: "12px",
-                          }}
-                        >
-                          <strong>Mileage</strong>
+                      <div className="mb-4 grid grid-cols-2 gap-2.5 text-sm text-slate-300">
+                        <div className="rounded-xl bg-slate-800/70 p-2.5">
+                          <strong className="text-slate-200">Odometer</strong>
                           <br />
                           {Number(car.mileage).toLocaleString("en-IN")} km
                         </div>
 
-                        <div
-                          style={{
-                            backgroundColor: "#f8fafc",
-                            padding: "10px",
-                            borderRadius: "12px",
-                          }}
-                        >
-                          <strong>Location</strong>
+                        <div className="rounded-xl bg-slate-800/70 p-2.5">
+                          <strong className="text-slate-200">Location</strong>
                           <br />
                           {car.location}
                         </div>
                       </div>
 
-                      <div style={{ display: "flex", gap: "10px" }}>
+                      <div className="flex gap-2.5">
                         <a
                           href={`/cars/${car.id}`}
-                          style={{
-                            flex: 1,
-                            display: "inline-block",
-                            backgroundColor: "#2563eb",
-                            color: "white",
-                            textDecoration: "none",
-                            padding: "12px",
-                            borderRadius: "12px",
-                            fontWeight: "700",
-                            textAlign: "center",
-                          }}
+                          className="flex-1 rounded-xl bg-cyan-500 py-3 text-center font-bold text-slate-950 transition hover:bg-cyan-400"
                         >
                           View Details
                         </a>
@@ -488,16 +295,7 @@ export default function Home() {
                         <button
                           type="button"
                           onClick={() => handleFeaturedCompare(car.id)}
-                          style={{
-                            flex: 1,
-                            backgroundColor: "#eff6ff",
-                            color: "#1d4ed8",
-                            border: "none",
-                            padding: "12px",
-                            borderRadius: "12px",
-                            fontWeight: "700",
-                            cursor: "pointer",
-                          }}
+                          className="flex-1 rounded-xl bg-cyan-500/10 py-3 font-bold text-cyan-300 transition hover:bg-cyan-500/20"
                         >
                           Compare
                         </button>
@@ -511,35 +309,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section style={{ padding: "40px 20px" }}>
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          <div style={infoCardStyle}>
-            <h3 style={infoTitleStyle}>Easy Search</h3>
-            <p style={infoTextStyle}>
+      {/* Info cards */}
+      <section className="px-5 py-10">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur">
+            <h3 className="mb-2 text-xl font-bold text-white">Easy Search</h3>
+            <p className="m-0 leading-relaxed text-slate-400">
               Buyers can quickly browse by make, model, year, budget, and fuel
               type.
             </p>
           </div>
 
-          <div style={infoCardStyle}>
-            <h3 style={infoTitleStyle}>Compare Cars</h3>
-            <p style={infoTextStyle}>
-              Shortlist 2 or 3 cars and compare their price, mileage, and key
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur">
+            <h3 className="mb-2 text-xl font-bold text-white">
+              Compare Cars
+            </h3>
+            <p className="m-0 leading-relaxed text-slate-400">
+              Shortlist 2 or 3 cars and compare their price, odometer, and key
               features side by side.
             </p>
           </div>
 
-          <div style={infoCardStyle}>
-            <h3 style={infoTitleStyle}>List Your Car</h3>
-            <p style={infoTextStyle}>
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-6 backdrop-blur">
+            <h3 className="mb-2 text-xl font-bold text-white">
+              List Your Car
+            </h3>
+            <p className="m-0 leading-relaxed text-slate-400">
               Sellers can create an account, upload photos, and post their car
               for buyers to discover.
             </p>
@@ -547,45 +342,24 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="seller-section" style={{ padding: "20px 20px 70px 20px" }}>
-        <div
-          style={{
-            maxWidth: "1200px",
-            margin: "0 auto",
-            background: "linear-gradient(135deg, #2563eb, #1d4ed8)",
-            borderRadius: "24px",
-            padding: "32px",
-            color: "white",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            gap: "20px",
-            alignItems: "center",
-          }}
-        >
+      {/* Seller CTA */}
+      <section id="seller-section" className="px-5 pb-16 pt-4">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-6 rounded-3xl border border-cyan-500/20 bg-gradient-to-br from-cyan-600/20 via-slate-900/60 to-slate-900/60 p-8 backdrop-blur sm:grid-cols-2">
           <div>
-            <h2 style={{ margin: "0 0 12px 0", fontSize: "32px" }}>
+            <h2 className="mb-3 text-3xl font-extrabold text-white">
               Ready to sell your car?
             </h2>
-            <p style={{ margin: 0, lineHeight: "1.7", color: "#dbeafe" }}>
-              Create your seller account, upload multiple photos, and reach car
-              buyers across India.
+            <p className="m-0 leading-relaxed text-slate-300">
+              Create your seller account, upload multiple photos, and reach
+              car buyers across India.
             </p>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-start" }}>
+          <div className="flex justify-start sm:justify-end">
             <button
               type="button"
               onClick={handleStartSelling}
-              style={{
-                backgroundColor: "white",
-                color: "#1d4ed8",
-                border: "none",
-                padding: "14px 22px",
-                borderRadius: "12px",
-                fontSize: "16px",
-                fontWeight: "800",
-                cursor: "pointer",
-              }}
+              className="rounded-xl bg-cyan-500 px-6 py-3.5 text-base font-extrabold text-slate-950 transition hover:bg-cyan-400"
             >
               Start Selling
             </button>
@@ -595,55 +369,3 @@ export default function Home() {
     </main>
   );
 }
-
-const inputStyle = {
-  width: "100%",
-  padding: "14px 16px",
-  borderRadius: "12px",
-  border: "1px solid #cbd5e1",
-  fontSize: "15px",
-  outline: "none",
-  backgroundColor: "white",
-};
-
-const statCardStyle = {
-  backgroundColor: "white",
-  borderRadius: "16px",
-  padding: "18px",
-  textAlign: "center",
-  boxShadow: "0 10px 30px rgba(15,23,42,0.06)",
-  border: "1px solid #e2e8f0",
-};
-
-const statNumberStyle = {
-  fontSize: "28px",
-  fontWeight: "800",
-  color: "#1d4ed8",
-  marginBottom: "4px",
-};
-
-const statLabelStyle = {
-  fontSize: "13px",
-  color: "#475569",
-  fontWeight: "600",
-};
-
-const infoCardStyle = {
-  backgroundColor: "white",
-  borderRadius: "20px",
-  padding: "24px",
-  boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-  border: "1px solid #e2e8f0",
-};
-
-const infoTitleStyle = {
-  margin: "0 0 10px 0",
-  fontSize: "22px",
-  color: "#0f172a",
-};
-
-const infoTextStyle = {
-  margin: 0,
-  color: "#475569",
-  lineHeight: "1.7",
-};

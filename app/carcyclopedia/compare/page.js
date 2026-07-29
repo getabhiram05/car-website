@@ -33,7 +33,7 @@ const SPEC_ROWS = [
   // Performance
   { label: "Top Speed", key: "top_speed", higherIsBetter: true },
   { label: "0-100 km/h", key: "acceleration_0_100" },
-  { label: "Mileage / Range", key: "mileage", higherIsBetter: true },
+  { label: "Odometer / Range", key: "mileage", higherIsBetter: true },
   { label: "City Mileage", key: "city_mileage", higherIsBetter: true },
   { label: "Highway Mileage", key: "highway_mileage", higherIsBetter: true },
   { label: "Fuel Tank Capacity", key: "fuel_tank_capacity", higherIsBetter: true },
@@ -210,86 +210,42 @@ function CompareContent() {
 
   return (
 
-    <main
-      style={{
-        background: "#f8fafc",
-        minHeight: "100vh",
-        color: "#0f172a",
-        padding: "40px 20px"
-      }}
-    >
+    <main className="min-h-screen bg-[#05070d] px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
 
-      <div
-        style={{
-          maxWidth: "1200px",
-          margin: "auto"
-        }}
-      >
+      <div className="mx-auto max-w-7xl">
 
         <a
           href="/carcyclopedia"
-          style={{
-            color: "#2563eb",
-            textDecoration: "none",
-            fontWeight: "600",
-            display: "inline-block",
-            marginBottom: "20px"
-          }}
+          className="mb-5 inline-block font-semibold text-cyan-400 no-underline hover:text-cyan-300"
         >
           ← Back to Carcyclopedia
         </a>
 
-        <h1
-          style={{
-            fontSize: "32px",
-            marginBottom: "10px"
-          }}
-        >
+        <h1 className="mb-2 text-3xl font-extrabold text-white">
           Compare Cars
         </h1>
 
-        <p
-          style={{
-            color: "#475569",
-            marginBottom: "30px"
-          }}
-        >
+        <p className="mb-8 text-slate-400">
           Highlighted values show the best figure across the cars you picked.
         </p>
 
         {loading ? (
 
-          <p>Loading...</p>
+          <p className="text-slate-400">Loading...</p>
 
         ) : cars.length === 0 ? (
 
-          <p>No cars selected. Go back and pick some cars to compare.</p>
+          <p className="text-slate-400">No cars selected. Go back and pick some cars to compare.</p>
 
         ) : (
 
-          <div style={{ overflowX: "auto" }}>
+          <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur">
 
-            <table
-              style={{
-                width: "100%",
-                borderCollapse: "collapse",
-                background: "white",
-                borderRadius: "16px",
-                overflow: "hidden",
-                boxShadow: "0 10px 30px rgba(15,23,42,.08)"
-              }}
-            >
+            <table className="w-full border-collapse">
 
               <thead>
                 <tr>
-                  <th
-                    style={{
-                      textAlign: "left",
-                      padding: "16px",
-                      background: "#f1f5f9",
-                      minWidth: "160px"
-                    }}
-                  >
+                  <th className="min-w-[160px] bg-slate-900/80 p-4 text-left text-slate-300">
                     Spec
                   </th>
 
@@ -297,26 +253,16 @@ function CompareContent() {
 
                     <th
                       key={car.slug}
-                      style={{
-                        padding: "16px",
-                        background: "#f1f5f9",
-                        minWidth: "220px"
-                      }}
+                      className="min-w-[220px] bg-slate-900/80 p-4"
                     >
 
                       <img
                         src={car.image}
                         alt={`${car.make} ${car.model}`}
-                        style={{
-                          width: "100%",
-                          height: "140px",
-                          objectFit: "cover",
-                          borderRadius: "10px",
-                          marginBottom: "10px"
-                        }}
+                        className="mb-2.5 h-36 w-full rounded-lg object-cover"
                       />
 
-                      <div style={{ fontSize: "16px", fontWeight: "700" }}>
+                      <div className="text-base font-bold text-white">
                         {car.make} {car.model}
                       </div>
 
@@ -337,19 +283,10 @@ function CompareContent() {
 
                     <tr
                       key={row.key}
-                      style={{
-                        background: i % 2 === 0 ? "white" : "#f8fafc"
-                      }}
+                      className={i % 2 === 0 ? "bg-transparent" : "bg-slate-900/40"}
                     >
 
-                      <td
-                        style={{
-                          padding: "14px 16px",
-                          fontWeight: "600",
-                          color: "#475569",
-                          borderTop: "1px solid #e2e8f0"
-                        }}
-                      >
+                      <td className="border-t border-slate-800 p-4 font-semibold text-slate-300">
                         {row.label}
                       </td>
 
@@ -365,13 +302,11 @@ function CompareContent() {
 
                           <td
                             key={car.slug}
-                            style={{
-                              padding: "14px 16px",
-                              borderTop: "1px solid #e2e8f0",
-                              background: isBest ? "#dcfce7" : "transparent",
-                              fontWeight: isBest ? "700" : "400",
-                              color: isBest ? "#166534" : "#0f172a"
-                            }}
+                            className={`border-t border-slate-800 p-4 ${
+                              isBest
+                                ? "bg-cyan-500/10 font-bold text-cyan-300"
+                                : "text-slate-200"
+                            }`}
                           >
                             {rawValue ?? "—"}
                             {isBest ? " ✓" : ""}
@@ -407,7 +342,7 @@ function CompareContent() {
 export default function ComparePage() {
 
   return (
-    <Suspense fallback={<p style={{ padding: "40px" }}>Loading...</p>}>
+    <Suspense fallback={<p className="min-h-screen bg-[#05070d] p-10 text-slate-400">Loading...</p>}>
       <CompareContent />
     </Suspense>
   );

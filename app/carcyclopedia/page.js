@@ -158,39 +158,21 @@ export default function Carcyclopedia() {
   return (
 
     <main
+      className="min-h-screen bg-[#05070d] px-4 py-10 text-slate-100 sm:px-6 lg:px-8"
       style={{
-        background:"#f8fafc",
-        minHeight:"100vh",
-        color:"#0f172a",
-        padding:"40px 20px",
-        paddingBottom: selected.length > 0 ? "110px" : "40px"
+        paddingBottom: selected.length > 0 ? "110px" : undefined
       }}
     >
 
-      <div
-        style={{
-          maxWidth:"1200px",
-          margin:"auto"
-        }}
-      >
+      <div className="mx-auto max-w-7xl">
 
-        <h1
-          style={{
-            fontSize:"36px",
-            marginBottom:"10px"
-          }}
-        >
+        <h1 className="mb-2 text-3xl font-extrabold text-white sm:text-4xl">
           Carcyclopedia
         </h1>
 
 
-        <p
-          style={{
-            color:"#475569",
-            marginBottom:"30px"
-          }}
-        >
-          An enthusiast's guide to popular cars in India —
+        <p className="mb-8 text-lg text-slate-400">
+          An enthusiast&apos;s guide to popular cars in India —
           specs, history, and everything in between.
         </p>
 
@@ -200,13 +182,7 @@ export default function Carcyclopedia() {
           placeholder="Search make or model"
           value={search}
           onChange={(e)=>setSearch(e.target.value)}
-          style={{
-            width:"100%",
-            padding:"14px 16px",
-            borderRadius:"12px",
-            border:"1px solid #cbd5e1",
-            marginBottom:"25px"
-          }}
+          className="mb-6 w-full rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3.5 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-500"
         />
 
 
@@ -214,28 +190,21 @@ export default function Carcyclopedia() {
 
         {loading ? (
 
-          <p>
+          <p className="text-slate-400">
             Loading cars...
           </p>
 
 
         ) : filteredCars.length === 0 ? (
 
-          <p>
+          <p className="text-slate-400">
             No cars found.
           </p>
 
 
         ) : (
 
-          <div
-            style={{
-              display:"grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(260px,1fr))",
-              gap:"20px"
-            }}
-          >
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
             {filteredCars.map((car)=>{
 
@@ -245,37 +214,16 @@ export default function Carcyclopedia() {
 
                 <div
                   key={car.slug}
-                  style={{
-                    position:"relative",
-                    background:"white",
-                    borderRadius:"20px",
-                    overflow:"hidden",
-                    border: isSelected
-                      ? "2px solid #2563eb"
-                      : "1px solid #e2e8f0",
-                    boxShadow:
-                      "0 10px 30px rgba(15,23,42,.08)"
-                  }}
+                  className={`relative overflow-hidden rounded-2xl bg-slate-900/50 backdrop-blur ${
+                    isSelected
+                      ? "border-2 border-cyan-500"
+                      : "border border-slate-800"
+                  }`}
                 >
 
                   <label
                     onClick={(e) => e.stopPropagation()}
-                    style={{
-                      position:"absolute",
-                      top:"12px",
-                      left:"12px",
-                      zIndex:2,
-                      background:"white",
-                      borderRadius:"8px",
-                      padding:"6px 10px",
-                      display:"flex",
-                      alignItems:"center",
-                      gap:"6px",
-                      fontSize:"13px",
-                      fontWeight:"600",
-                      boxShadow:"0 2px 8px rgba(15,23,42,.15)",
-                      cursor:"pointer"
-                    }}
+                    className="absolute left-3 top-3 z-10 flex cursor-pointer items-center gap-1.5 rounded-lg bg-slate-950/90 px-2.5 py-1.5 text-sm font-semibold text-slate-100 shadow-lg"
                   >
                     <input
                       type="checkbox"
@@ -288,61 +236,30 @@ export default function Carcyclopedia() {
 
                   <a
                     href={`/carcyclopedia/${car.slug}`}
-                    style={{
-                      textDecoration:"none",
-                      color:"inherit",
-                      display:"block"
-                    }}
+                    className="block text-inherit no-underline"
                   >
 
                     <img
                       src={car.image}
                       alt={`${car.make} ${car.model}`}
                       loading="lazy"
-                      style={{
-                        width:"100%",
-                        height:"180px",
-                        objectFit:"cover"
-                      }}
+                      className="h-[180px] w-full object-cover"
                     />
 
 
-                    <div
-                      style={{
-                        padding:"16px"
-                      }}
-                    >
+                    <div className="p-4">
 
-                      <span
-                        style={{
-                          background:"#eff6ff",
-                          color:"#1d4ed8",
-                          padding:"4px 10px",
-                          borderRadius:"999px",
-                          fontSize:"12px",
-                          fontWeight:"700"
-                        }}
-                      >
+                      <span className="rounded-full bg-cyan-500/10 px-2.5 py-1 text-xs font-bold text-cyan-300">
                         {car.category}
                       </span>
 
 
-                      <h3
-                        style={{
-                          fontSize:"20px",
-                          margin:"12px 0 6px"
-                        }}
-                      >
+                      <h3 className="my-3 text-xl font-bold text-white">
                         {car.make} {car.model}
                       </h3>
 
 
-                      <p
-                        style={{
-                          color:"#475569",
-                          margin:0
-                        }}
-                      >
+                      <p className="m-0 text-slate-400">
                         Since {car.launch_year} • {car.mileage}
                       </p>
 
@@ -368,42 +285,19 @@ export default function Carcyclopedia() {
 
       {selected.length > 0 && (
 
-        <div
-          style={{
-            position:"fixed",
-            bottom:0,
-            left:0,
-            right:0,
-            background:"#0f172a",
-            color:"white",
-            padding:"16px 20px",
-            display:"flex",
-            alignItems:"center",
-            justifyContent:"space-between",
-            flexWrap:"wrap",
-            gap:"12px",
-            zIndex:10
-          }}
-        >
+        <div className="fixed inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-between gap-3 border-t border-slate-800 bg-[#05070d]/95 px-5 py-4 backdrop-blur">
 
-          <span>
+          <span className="text-slate-200">
             {selected.length} car{selected.length > 1 ? "s" : ""} selected
             {selected.length < 2 ? " — pick at least 2 to compare" : ""}
           </span>
 
 
-          <div style={{ display:"flex", gap:"10px" }}>
+          <div className="flex gap-2.5">
 
             <button
               onClick={() => setSelected([])}
-              style={{
-                padding:"10px 16px",
-                borderRadius:"10px",
-                border:"1px solid #475569",
-                background:"transparent",
-                color:"white",
-                cursor:"pointer"
-              }}
+              className="rounded-lg border border-slate-700 bg-transparent px-4 py-2.5 text-slate-100"
             >
               Clear
             </button>
@@ -415,15 +309,11 @@ export default function Carcyclopedia() {
                   ? `/carcyclopedia/compare?slugs=${selected.join(",")}`
                   : undefined
               }
-              style={{
-                padding:"10px 16px",
-                borderRadius:"10px",
-                background: selected.length >= 2 ? "#2563eb" : "#334155",
-                color:"white",
-                textDecoration:"none",
-                pointerEvents: selected.length >= 2 ? "auto" : "none",
-                cursor: selected.length >= 2 ? "pointer" : "not-allowed"
-              }}
+              className={`rounded-lg px-4 py-2.5 text-white no-underline ${
+                selected.length >= 2
+                  ? "cursor-pointer bg-cyan-500 text-slate-950"
+                  : "pointer-events-none cursor-not-allowed bg-slate-800 text-slate-500"
+              }`}
             >
               Compare Now
             </a>

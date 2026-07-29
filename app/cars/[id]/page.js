@@ -13,11 +13,13 @@ export default async function CarDetailPage({ params }) {
 
   if (error || !selectedCarRaw) {
     return (
-      <main style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
-        <h1>Car not found</h1>
-        <p>Route ID: {resolvedParams.id}</p>
-        <p>Please go back and try another car.</p>
-        <Link href="/cars">Back to listings</Link>
+      <main className="min-h-screen bg-[#05070d] p-10 text-slate-100">
+        <h1 className="text-2xl font-bold text-white">Car not found</h1>
+        <p className="mt-2 text-slate-400">Route ID: {resolvedParams.id}</p>
+        <p className="mt-1 text-slate-400">Please go back and try another car.</p>
+        <Link href="/cars" className="mt-4 inline-block font-semibold text-cyan-400">
+          Back to listings
+        </Link>
       </main>
     );
   }
@@ -36,158 +38,79 @@ export default async function CarDetailPage({ params }) {
       })
     : "N/A";
 
+  const detailItems = [
+    { label: "Year", value: selectedCar.year },
+    {
+      label: "Odometer",
+      value: selectedCar.mileage
+        ? `${selectedCar.mileage.toLocaleString("en-IN")} km`
+        : "N/A",
+    },
+    { label: "Fuel", value: selectedCar.fuel },
+    { label: "Transmission", value: selectedCar.transmission },
+    { label: "Owner", value: selectedCar.owner || "N/A" },
+    { label: "Color", value: selectedCar.color || "N/A" },
+    { label: "Registration State", value: selectedCar.registration_state || "N/A" },
+    { label: "Insurance Valid Till", value: formattedInsurance },
+    { label: "Location", value: selectedCar.location },
+    { label: "Seller", value: selectedCar.seller },
+    { label: "Contact Number", value: selectedCar.seller_phone || "N/A" },
+  ];
+
   return (
-    <main style={{ backgroundColor: "#f8fafc", minHeight: "100vh", padding: "40px 20px" }}>
-      <div
-        style={{
-          maxWidth: "1000px",
-          margin: "0 auto",
-          backgroundColor: "white",
-          borderRadius: "24px",
-          overflow: "hidden",
-          boxShadow: "0 10px 30px rgba(15,23,42,0.08)",
-          border: "1px solid #e2e8f0",
-        }}
-      >
+    <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-4xl overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 backdrop-blur">
         <CarGallery images={selectedCar.images} alt={`${selectedCar.make} ${selectedCar.model}`} />
 
-        <div style={{ padding: "24px" }}>
+        <div className="p-6 sm:p-8">
           <Link
             href="/cars"
-            style={{
-              display: "inline-block",
-              marginBottom: "18px",
-              color: "#2563eb",
-              textDecoration: "none",
-              fontWeight: "700",
-            }}
+            className="mb-4 inline-block font-bold text-cyan-400 hover:text-cyan-300"
           >
             ← Back to listings
           </Link>
 
-          <h1 style={{ margin: "0 0 10px 0", fontSize: "36px", color: "#0f172a" }}>
+          <h1 className="mb-2 text-3xl font-extrabold text-white sm:text-4xl">
             {selectedCar.make} {selectedCar.model}
           </h1>
 
-          <p style={{ margin: "0 0 20px 0", fontSize: "30px", fontWeight: "800", color: "#2563eb" }}>
+          <p className="mb-6 text-3xl font-extrabold text-cyan-400">
             ₹{new Intl.NumberFormat("en-IN").format(selectedCar.price)}
           </p>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: "14px",
-              marginBottom: "24px",
-            }}
-          >
-            <div style={detailBoxStyle}>
-              <strong>Year</strong>
-              <br />
-              {selectedCar.year}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Mileage</strong>
-              <br />
-              {selectedCar.mileage ? selectedCar.mileage.toLocaleString("en-IN") : "N/A"} km
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Fuel</strong>
-              <br />
-              {selectedCar.fuel}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Transmission</strong>
-              <br />
-              {selectedCar.transmission}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Owner</strong>
-              <br />
-              {selectedCar.owner || "N/A"}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Color</strong>
-              <br />
-              {selectedCar.color || "N/A"}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Registration State</strong>
-              <br />
-              {selectedCar.registration_state || "N/A"}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Insurance Valid Till</strong>
-              <br />
-              {formattedInsurance}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Location</strong>
-              <br />
-              {selectedCar.location}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Seller</strong>
-              <br />
-              {selectedCar.seller}
-            </div>
-
-            <div style={detailBoxStyle}>
-              <strong>Contact Number</strong>
-              <br />
-              {selectedCar.seller_phone || "N/A"}
-            </div>
+          <div className="mb-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+            {detailItems.map((item) => (
+              <div
+                key={item.label}
+                className="rounded-2xl border border-slate-800 bg-slate-950/40 p-3.5 leading-relaxed text-slate-300"
+              >
+                <strong className="text-slate-100">{item.label}</strong>
+                <br />
+                {item.value}
+              </div>
+            ))}
           </div>
 
-          <div style={{ marginBottom: "24px" }}>
-            <h2 style={{ fontSize: "24px", marginBottom: "10px", color: "#0f172a" }}>
-              Description
-            </h2>
-            <p style={{ color: "#475569", lineHeight: "1.8", margin: 0 }}>
+          <div className="mb-8">
+            <h2 className="mb-3 text-2xl font-bold text-white">Description</h2>
+            <p className="m-0 leading-relaxed text-slate-400">
               {selectedCar.description}
             </p>
           </div>
 
-          <div>
-            
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-              {selectedCar.features && selectedCar.features.map((feature) => (
+          <div className="flex flex-wrap gap-2.5">
+            {selectedCar.features &&
+              selectedCar.features.map((feature) => (
                 <span
                   key={feature}
-                  style={{
-                    backgroundColor: "#dbeafe",
-                    color: "#1d4ed8",
-                    padding: "10px 14px",
-                    borderRadius: "999px",
-                    fontWeight: "600",
-                    fontSize: "14px",
-                  }}
+                  className="rounded-full bg-cyan-500/10 px-3.5 py-2.5 text-sm font-semibold text-cyan-300"
                 >
                   {feature}
                 </span>
               ))}
-            </div>
           </div>
         </div>
       </div>
     </main>
   );
 }
-
-const detailBoxStyle = {
-  backgroundColor: "#f8fafc",
-  padding: "14px",
-  borderRadius: "14px",
-  color: "#334155",
-  lineHeight: "1.7",
-};

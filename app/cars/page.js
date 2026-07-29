@@ -10,9 +10,9 @@ export default function CarsPage() {
   return (
     <Suspense
       fallback={
-        <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+        <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <p className="text-gray-600">Loading cars...</p>
+            <p className="text-slate-400">Loading cars...</p>
           </div>
         </main>
       }
@@ -30,6 +30,7 @@ function CarsPageContent() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(urlSearch);
   const [selectedMake, setSelectedMake] = useState("");
+  const [cityTerm, setCityTerm] = useState("");
   const [minYear, setMinYear] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sortBy, setSortBy] = useState("year-desc");
@@ -64,6 +65,7 @@ function CarsPageContent() {
 
   const filteredCars = useMemo(() => {
     const cleanSearchTerm = searchTerm.toLowerCase().trim();
+    const cleanCityTerm = cityTerm.toLowerCase().trim();
 
     const filtered = cars.filter((car) => {
       const fullSearchText = `${car.make} ${car.model}`.toLowerCase();
@@ -72,11 +74,15 @@ function CarsPageContent() {
         ? fullSearchText.includes(cleanSearchTerm)
         : true;
 
+      const matchesCity = cleanCityTerm
+        ? (car.location || "").toLowerCase().includes(cleanCityTerm)
+        : true;
+
       const matchesMake = selectedMake ? car.make === selectedMake : true;
       const matchesYear = minYear ? car.year >= Number(minYear) : true;
       const matchesPrice = maxPrice ? car.price <= Number(maxPrice) : true;
 
-      return matchesSearch && matchesMake && matchesYear && matchesPrice;
+      return matchesSearch && matchesCity && matchesMake && matchesYear && matchesPrice;
     });
 
     const sorted = [...filtered].sort((a, b) => {
@@ -96,7 +102,7 @@ function CarsPageContent() {
     });
 
     return sorted;
-  }, [cars, searchTerm, selectedMake, minYear, maxPrice, sortBy]);
+  }, [cars, searchTerm, cityTerm, selectedMake, minYear, maxPrice, sortBy]);
 
   const compareUrl =
     selectedCompareCars.length >= 2
@@ -105,6 +111,7 @@ function CarsPageContent() {
 
   function handleResetFilters() {
     setSearchTerm("");
+    setCityTerm("");
     setSelectedMake("");
     setMinYear("");
     setMaxPrice("");
@@ -144,42 +151,42 @@ function CarsPageContent() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-gray-600">Loading cars...</p>
+          <p className="text-slate-400">Loading cars...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+          <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
             Browse Cars
           </h1>
-          <p className="mt-3 text-lg text-gray-600">
+          <p className="mt-3 text-lg text-slate-400">
             Explore popular used cars across India.
           </p>
         </div>
 
-        <div className="mb-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-200">
+        <div className="mb-8 rounded-2xl border border-slate-800 bg-slate-900/50 p-5 backdrop-blur">
           <div className="mb-4">
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-white">
               Search, Filter and Sort
             </h2>
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="mt-1 text-sm text-slate-400">
               Search by make or model, then narrow results using filters and
               sorting.
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
             <div>
               <label
                 htmlFor="search"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-slate-300"
               >
                 Search make or model
               </label>
@@ -189,14 +196,31 @@ function CarsPageContent() {
                 placeholder="Example: Maruti or Swift"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="city"
+                className="mb-2 block text-sm font-medium text-slate-300"
+              >
+                City
+              </label>
+              <input
+                id="city"
+                type="text"
+                placeholder="Example: Ahmedabad"
+                value={cityTerm}
+                onChange={(e) => setCityTerm(e.target.value)}
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
               />
             </div>
 
             <div>
               <label
                 htmlFor="make"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-slate-300"
               >
                 Make
               </label>
@@ -204,7 +228,7 @@ function CarsPageContent() {
                 id="make"
                 value={selectedMake}
                 onChange={(e) => setSelectedMake(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-500"
               >
                 <option value="">All makes</option>
                 {uniqueMakes.map((make) => (
@@ -218,7 +242,7 @@ function CarsPageContent() {
             <div>
               <label
                 htmlFor="minYear"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-slate-300"
               >
                 Minimum year
               </label>
@@ -228,14 +252,14 @@ function CarsPageContent() {
                 placeholder="Example: 2019"
                 value={minYear}
                 onChange={(e) => setMinYear(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
               />
             </div>
 
             <div>
               <label
                 htmlFor="maxPrice"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-slate-300"
               >
                 Maximum price (₹)
               </label>
@@ -245,14 +269,14 @@ function CarsPageContent() {
                 placeholder="Example: 800000"
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-cyan-500"
               />
             </div>
 
             <div>
               <label
                 htmlFor="sortBy"
-                className="mb-2 block text-sm font-medium text-gray-700"
+                className="mb-2 block text-sm font-medium text-slate-300"
               >
                 Sort by
               </label>
@@ -260,20 +284,20 @@ function CarsPageContent() {
                 id="sortBy"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none transition focus:border-cyan-500"
               >
                 <option value="year-desc">Year: newest first</option>
                 <option value="price-asc">Price: low to high</option>
                 <option value="price-desc">Price: high to low</option>
-                <option value="mileage-asc">Mileage: low to high</option>
+                <option value="mileage-asc">Odometer: low to high</option>
               </select>
             </div>
           </div>
 
           <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm text-gray-700">
+            <p className="text-sm text-slate-400">
               Showing{" "}
-              <span className="font-semibold text-gray-900">
+              <span className="font-semibold text-white">
                 {filteredCars.length}
               </span>{" "}
               {filteredCars.length === 1 ? "car" : "cars"}
@@ -282,20 +306,20 @@ function CarsPageContent() {
             <button
               type="button"
               onClick={handleResetFilters}
-              className="inline-flex items-center justify-center rounded-lg bg-gray-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-gray-800"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:bg-slate-800/60"
             >
               Reset Filters
             </button>
           </div>
         </div>
 
-        <div className="mb-8 rounded-2xl bg-blue-50 p-5 shadow-sm ring-1 ring-blue-100">
+        <div className="mb-8 rounded-2xl border border-cyan-500/20 bg-cyan-500/5 p-5 backdrop-blur">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-white">
                 Compare Cars
               </h2>
-              <p className="mt-1 text-sm text-gray-700">
+              <p className="mt-1 text-sm text-slate-300">
                 Select 2 or 3 cars to compare side by side.
               </p>
             </div>
@@ -305,17 +329,17 @@ function CarsPageContent() {
                 type="button"
                 onClick={handleClearCompare}
                 disabled={selectedCompareCars.length === 0}
-                className="inline-flex items-center justify-center rounded-lg bg-white px-4 py-3 text-sm font-semibold text-gray-900 ring-1 ring-gray-300 transition hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+                className="inline-flex items-center justify-center rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-3 text-sm font-semibold text-slate-100 transition hover:bg-slate-800/60 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Clear Compare
               </button>
 
               <Link
                 href={compareUrl}
-                className={`inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold text-white transition ${
+                className={`inline-flex items-center justify-center rounded-lg px-4 py-3 text-sm font-semibold transition ${
                   selectedCompareCars.length >= 2
-                    ? "bg-blue-600 hover:bg-blue-700"
-                    : "cursor-not-allowed bg-blue-300"
+                    ? "bg-cyan-500 text-slate-950 hover:bg-cyan-400"
+                    : "cursor-not-allowed bg-cyan-500/30 text-slate-900"
                 }`}
               >
                 Compare Selected ({selectedCompareCars.length})
@@ -328,14 +352,14 @@ function CarsPageContent() {
               {selectedCompareCars.map((car) => (
                 <div
                   key={car.id}
-                  className="rounded-xl bg-white p-4 ring-1 ring-gray-200"
+                  className="rounded-xl border border-slate-800 bg-slate-900/60 p-4"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold text-gray-900">
+                      <p className="text-sm font-semibold text-white">
                         {car.year} {car.make} {car.model}
                       </p>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="mt-1 text-sm text-slate-400">
                         ₹{car.price.toLocaleString("en-IN")} ·{" "}
                         {car.mileage.toLocaleString("en-IN")} km
                       </p>
@@ -344,7 +368,7 @@ function CarsPageContent() {
                     <button
                       type="button"
                       onClick={() => handleRemoveCompareCar(car.id)}
-                      className="rounded-lg bg-red-50 px-3 py-2 text-xs font-semibold text-red-600 transition hover:bg-red-100"
+                      className="rounded-lg bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-400 transition hover:bg-red-500/20"
                     >
                       Remove
                     </button>
@@ -353,7 +377,7 @@ function CarsPageContent() {
               ))}
             </div>
           ) : (
-            <p className="mt-5 text-sm text-gray-600">
+            <p className="mt-5 text-sm text-slate-400">
               No cars selected yet. Use the compare buttons below to add cars.
             </p>
           )}
@@ -375,8 +399,8 @@ function CarsPageContent() {
                     onClick={() => handleToggleCompare(car)}
                     className={`w-full rounded-lg px-4 py-3 text-sm font-semibold transition ${
                       isSelectedForCompare
-                        ? "bg-green-600 text-white hover:bg-green-700"
-                        : "bg-white text-gray-900 ring-1 ring-gray-300 hover:bg-gray-100"
+                        ? "bg-cyan-500 text-slate-950 hover:bg-cyan-400"
+                        : "border border-slate-700 bg-slate-900/60 text-slate-100 hover:bg-slate-800/60"
                     }`}
                   >
                     {isSelectedForCompare
@@ -388,17 +412,17 @@ function CarsPageContent() {
             })}
           </div>
         ) : (
-          <div className="rounded-2xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-8 text-center backdrop-blur">
+            <h3 className="text-xl font-semibold text-white">
               No cars found
             </h3>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-slate-400">
               Try changing your search or filters to see more results.
             </p>
             <button
               type="button"
               onClick={handleResetFilters}
-              className="mt-5 inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+              className="mt-5 inline-flex items-center justify-center rounded-lg bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
             >
               Clear Search and Filters
             </button>

@@ -115,12 +115,7 @@ export default function CarcyclopediaDetail() {
   if (loading) {
 
     return (
-      <main
-        style={{
-          padding:"60px",
-          textAlign:"center"
-        }}
-      >
+      <main className="min-h-screen bg-[#05070d] p-16 text-center text-slate-300">
         Loading...
       </main>
     );
@@ -132,18 +127,14 @@ export default function CarcyclopediaDetail() {
   if (notFound) {
 
     return (
-      <main
-        style={{
-          padding:"60px",
-          textAlign:"center"
-        }}
-      >
 
-        <h1>
+      <main className="min-h-screen bg-[#05070d] p-16 text-center text-slate-300">
+
+        <h1 className="text-2xl font-bold text-white">
           Car not found
         </h1>
 
-        <a href="/carcyclopedia">
+        <a href="/carcyclopedia" className="mt-3 inline-block font-semibold text-cyan-400">
           Back to Carcyclopedia
         </a>
 
@@ -156,336 +147,177 @@ export default function CarcyclopediaDetail() {
 
   return (
 
-    <main
-      style={{
-        background:"#f8fafc",
-        minHeight:"100vh",
-        padding:"40px 20px",
-        color:"#0f172a"
-      }}
-    >
+    <main className="min-h-screen bg-[#05070d] px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
 
-      <div
-        style={{
-          maxWidth:"900px",
-          margin:"auto"
-        }}
-      >
+      <div className="mx-auto max-w-4xl">
 
 
         <a
           href="/carcyclopedia"
-          style={{
-            color:"#2563eb",
-            textDecoration:"none",
-            fontWeight:"600"
-          }}
+          className="font-semibold text-cyan-400 no-underline hover:text-cyan-300"
         >
           ← Back to Carcyclopedia
         </a>
 
 
 
-        <div
-          style={{
-            marginTop:"20px",
-            background:"white",
-            borderRadius:"24px",
-            overflow:"hidden",
-            border:"1px solid #e2e8f0",
-            boxShadow:
-              "0 10px 30px rgba(15,23,42,0.08)"
-          }}
-        >
+        <div className="mt-5 overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 backdrop-blur">
 
 
           <img
             src={image}
             alt={`${car.make} ${car.model}`}
-            style={{
-              width:"100%",
-              height:"320px",
-              objectFit:"cover"
-            }}
+            className="h-80 w-full object-cover"
           />
 
 
 
-          <div
-            style={{
-              padding:"30px"
-            }}
-          >
+          <div className="p-6 sm:p-8">
 
 
-            <div
-              style={{
-                display:"inline-block",
-                background:"#eff6ff",
-                color:"#1d4ed8",
-                padding:"6px 14px",
-                borderRadius:"999px",
-                fontWeight:"700",
-                fontSize:"13px"
-              }}
-            >
+            <div className="inline-block rounded-full bg-cyan-500/10 px-3.5 py-1.5 text-sm font-bold text-cyan-300">
               {car.category}
             </div>
 
 
 
-            <h1
-              style={{
-                fontSize:"36px",
-                margin:"18px 0"
-              }}
-            >
+            <h1 className="my-4 text-3xl font-extrabold text-white sm:text-4xl">
               {car.make} {car.model}
             </h1>
 
 
 
-            <h2 style={{ marginTop: "10px", marginBottom: "18px" }}>
-  Overview
-</h2>
+            <h2 className="mb-4 mt-2 text-2xl font-bold text-white">
+              Overview
+            </h2>
 
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-    gap: "16px",
-    marginBottom: "35px"
-  }}
->
-  <SpecBox label="Launch Year" value={car.launch_year}/>
-  <SpecBox label="Current Generation" value={car.current_gen_since}/>
-  <SpecBox label="Category" value={car.category}/>
-  <SpecBox label="Body Type" value={car.body_type}/>
-  <SpecBox label="Segment" value={car.segment}/>
-  <SpecBox label="Manufacturer" value={car.manufacturer}/>
-  <SpecBox label="Country" value={car.country}/>
-  <SpecBox label="Production Status" value={car.production_status}/>
-</div>
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="Launch Year" value={car.launch_year}/>
+              <SpecBox label="Current Generation" value={car.current_gen_since}/>
+              <SpecBox label="Category" value={car.category}/>
+              <SpecBox label="Body Type" value={car.body_type}/>
+              <SpecBox label="Segment" value={car.segment}/>
+              <SpecBox label="Manufacturer" value={car.manufacturer}/>
+              <SpecBox label="Country" value={car.country}/>
+              <SpecBox label="Production Status" value={car.production_status}/>
+            </div>
 
-<h2 style={{ marginBottom: "18px" }}>
-  Engine & Transmission
-</h2>
+            <h2 className="mb-4 text-2xl font-bold text-white">
+              Engine & Transmission
+            </h2>
 
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-    gap: "16px",
-    marginBottom: "35px"
-  }}
->
-  <SpecBox label="Engine" value={car.engine}/>
-  <SpecBox label="Displacement" value={car.displacement_cc ? `${car.displacement_cc} cc` : null}/>
-  <SpecBox label="Cylinders" value={car.cylinders}/>
-  <SpecBox label="Power" value={car.power}/>
-  <SpecBox label="Torque" value={car.torque}/>
-  <SpecBox label="Fuel Type" value={car.fuel_types}/>
-  <SpecBox label="Transmission" value={car.transmission}/>
-  <SpecBox label="Drivetrain" value={car.drivetrain}/>
-</div>
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="Engine" value={car.engine}/>
+              <SpecBox label="Displacement" value={car.displacement_cc ? `${car.displacement_cc} cc` : null}/>
+              <SpecBox label="Cylinders" value={car.cylinders}/>
+              <SpecBox label="Power" value={car.power}/>
+              <SpecBox label="Torque" value={car.torque}/>
+              <SpecBox label="Fuel Type" value={car.fuel_types}/>
+              <SpecBox label="Transmission" value={car.transmission}/>
+              <SpecBox label="Drivetrain" value={car.drivetrain}/>
+            </div>
 
-<h2 style={{ marginBottom: "18px" }}>
-  Performance
-</h2>
+            <h2 className="mb-4 text-2xl font-bold text-white">
+              Performance
+            </h2>
 
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-    gap: "16px",
-    marginBottom: "35px"
-  }}
->
-  <SpecBox label="Mileage" value={car.mileage}/>
-  <SpecBox label="City Mileage" value={car.city_mileage}/>
-  <SpecBox label="Highway Mileage" value={car.highway_mileage}/>
-  <SpecBox label="Top Speed" value={car.top_speed}/>
-  <SpecBox label="0-100 km/h" value={car.acceleration_0_100}/>
-  <SpecBox label="Fuel Tank" value={car.fuel_tank_capacity}/>
-</div>
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="Odometer" value={car.mileage}/>
+              <SpecBox label="City Mileage" value={car.city_mileage}/>
+              <SpecBox label="Highway Mileage" value={car.highway_mileage}/>
+              <SpecBox label="Top Speed" value={car.top_speed}/>
+              <SpecBox label="0-100 km/h" value={car.acceleration_0_100}/>
+              <SpecBox label="Fuel Tank" value={car.fuel_tank_capacity}/>
+            </div>
 
-<h2 style={{ marginBottom: "18px" }}>
-  Dimensions
-</h2>
+            <h2 className="mb-4 text-2xl font-bold text-white">
+              Dimensions
+            </h2>
 
-<div
-  style={{
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))",
-    gap: "16px",
-    marginBottom: "35px"
-  }}
->
-  <SpecBox label="Length" value={car.length}/>
-  <SpecBox label="Width" value={car.width}/>
-  <SpecBox label="Height" value={car.height}/>
-  <SpecBox label="Wheelbase" value={car.wheelbase}/>
-  <SpecBox label="Ground Clearance" value={car.ground_clearance}/>
-  <SpecBox label="Boot Space" value={car.boot_space}/>
-  <SpecBox label="Kerb Weight" value={car.kerb_weight}/>
-</div>
-<h2
-  style={{
-    marginBottom:"18px"
-  }}
->
-  Safety
-</h2>
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="Length" value={car.length}/>
+              <SpecBox label="Width" value={car.width}/>
+              <SpecBox label="Height" value={car.height}/>
+              <SpecBox label="Wheelbase" value={car.wheelbase}/>
+              <SpecBox label="Ground Clearance" value={car.ground_clearance}/>
+              <SpecBox label="Boot Space" value={car.boot_space}/>
+              <SpecBox label="Kerb Weight" value={car.kerb_weight}/>
+            </div>
 
-<div
-  style={{
-    display:"grid",
-    gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
-    gap:"16px",
-    marginBottom:"35px"
-  }}
->
-  <SpecBox label="Airbags" value={car.airbags}/>
-  <SpecBox label="ABS" value={car.abs}/>
-  <SpecBox label="EBD" value={car.ebd}/>
-  <SpecBox label="ESP" value={car.esp}/>
-  <SpecBox label="Rear Camera" value={car.rear_camera}/>
-  <SpecBox label="Parking Sensors" value={car.parking_sensors}/>
-</div>
+            <h2 className="mb-4 text-2xl font-bold text-white">
+              Safety
+            </h2>
+
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="Airbags" value={car.airbags}/>
+              <SpecBox label="ABS" value={car.abs}/>
+              <SpecBox label="EBD" value={car.ebd}/>
+              <SpecBox label="ESP" value={car.esp}/>
+              <SpecBox label="Rear Camera" value={car.rear_camera}/>
+              <SpecBox label="Parking Sensors" value={car.parking_sensors}/>
+            </div>
 
 
-<h2
-  style={{
-    marginBottom:"18px"
-  }}
->
-  Features
-</h2>
+            <h2 className="mb-4 text-2xl font-bold text-white">
+              Features
+            </h2>
 
-<div
-  style={{
-    display:"grid",
-    gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
-    gap:"16px",
-    marginBottom:"35px"
-  }}
->
-  <SpecBox label="Climate Control" value={car.climate_control}/>
-  <SpecBox label="Cruise Control" value={car.cruise_control}/>
-  <SpecBox label="Sunroof" value={car.sunroof}/>
-  <SpecBox label="Android Auto" value={car.android_auto}/>
-  <SpecBox label="Apple CarPlay" value={car.apple_carplay}/>
-  <SpecBox label="Seating Capacity" value={car.seating_capacity}/>
-</div>
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="Climate Control" value={car.climate_control}/>
+              <SpecBox label="Cruise Control" value={car.cruise_control}/>
+              <SpecBox label="Sunroof" value={car.sunroof}/>
+              <SpecBox label="Android Auto" value={car.android_auto}/>
+              <SpecBox label="Apple CarPlay" value={car.apple_carplay}/>
+              <SpecBox label="Seating Capacity" value={car.seating_capacity}/>
+            </div>
 
 
-<h2
-  style={{
-    marginBottom:"18px"
-  }}
->
-  Pricing & Rivals
-</h2>
+            <h2 className="mb-4 text-2xl font-bold text-white">
+              Pricing & Rivals
+            </h2>
 
-<div
-  style={{
-    display:"grid",
-    gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",
-    gap:"16px",
-    marginBottom:"35px"
-  }}
->
-  <SpecBox label="New Price" value={car.price_range_new}/>
-  <SpecBox label="Used Price" value={car.price_range_used}/>
-  <SpecBox label="Rivals" value={car.rivals}/>
-</div>
+            <div className="mb-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <SpecBox label="New Price" value={car.price_range_new}/>
+              <SpecBox label="Used Price" value={car.price_range_used}/>
+              <SpecBox label="Rivals" value={car.rivals}/>
+            </div>
 
 
-<div
-  style={{
-    display:"grid",
-    gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))",
-    gap:"20px",
-    marginBottom:"40px"
-  }}
->
+            <div className="mb-10 grid grid-cols-1 gap-5 sm:grid-cols-2">
 
-  <div
-    style={{
-      background:"#ecfdf5",
-      border:"1px solid #10b981",
-      borderRadius:"16px",
-      padding:"20px"
-    }}
-  >
-    <h2
-      style={{
-        marginTop:0,
-        color:"#047857"
-      }}
-    >
-      👍 Pros
-    </h2>
+              <div className="rounded-2xl border border-green-500/30 bg-green-500/10 p-5">
+                <h2 className="mt-0 text-xl font-bold text-green-400">
+                  Pros
+                </h2>
 
-    <p
-      style={{
-        margin:0,
-        lineHeight:"1.7"
-      }}
-    >
-      {car.pros || "N/A"}
-    </p>
+                <p className="m-0 leading-relaxed text-slate-200">
+                  {car.pros || "N/A"}
+                </p>
 
-  </div>
+              </div>
 
 
-  <div
-    style={{
-      background:"#fef2f2",
-      border:"1px solid #ef4444",
-      borderRadius:"16px",
-      padding:"20px"
-    }}
-  >
-    <h2
-      style={{
-        marginTop:0,
-        color:"#b91c1c"
-      }}
-    >
-      👎 Cons
-    </h2>
+              <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-5">
+                <h2 className="mt-0 text-xl font-bold text-red-400">
+                  Cons
+                </h2>
 
-    <p
-      style={{
-        margin:0,
-        lineHeight:"1.7"
-      }}
-    >
-      {car.cons || "N/A"}
-    </p>
+                <p className="m-0 leading-relaxed text-slate-200">
+                  {car.cons || "N/A"}
+                </p>
 
-  </div>
+              </div>
 
-</div>
+            </div>
 
 
 
-            <h2
-              style={{
-                marginTop:"35px"
-              }}
-            >
+            <h2 className="mt-9 text-2xl font-bold text-white">
               History
             </h2>
 
 
-            <p
-              style={{
-                color:"#475569",
-                lineHeight:"1.7"
-              }}
-            >
+            <p className="leading-relaxed text-slate-400">
               {history}
             </p>
 
@@ -510,33 +342,14 @@ function SpecBox({label,value}) {
 
   return (
 
-    <div
-      style={{
-        background:"#f8fafc",
-        border:"1px solid #e2e8f0",
-        borderRadius:"14px",
-        padding:"14px"
-      }}
-    >
+    <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-3.5">
 
-      <div
-        style={{
-          fontSize:"12px",
-          color:"#64748b",
-          fontWeight:"700",
-          textTransform:"uppercase"
-        }}
-      >
+      <div className="text-xs font-bold uppercase text-slate-500">
         {label}
       </div>
 
 
-      <div
-        style={{
-          marginTop:"5px",
-          fontWeight:"600"
-        }}
-      >
+      <div className="mt-1 font-semibold text-slate-100">
         {value || "N/A"}
       </div>
 

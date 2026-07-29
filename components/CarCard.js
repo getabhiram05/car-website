@@ -1,48 +1,113 @@
 import Link from "next/link";
+import { Calendar, Fuel, Gauge, MapPin } from "lucide-react";
+import { Card } from "./ui/card";
 
 export default function CarCard({ car }) {
   const formattedPrice = new Intl.NumberFormat("en-IN").format(car.price);
   const formattedMileage = new Intl.NumberFormat("en-IN").format(car.mileage);
 
   return (
-    <Link
-      href={`/cars/${car.id}`}
-      className="block overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
-    >
-      <div className="aspect-[16/10] w-full overflow-hidden bg-gray-100">
-        <img
-          src={car.images[0]}
-          alt={`${car.make} ${car.model}`}
-          className="h-full w-full object-cover"
-        />
-      </div>
+    <Card className="overflow-hidden group">
+      <Link href={`/cars/${car.id}`}>
 
-      <div className="p-4">
-        <h3 className="text-xl font-semibold text-gray-900">
-          {car.make} {car.model}
-        </h3>
+        {/* Image */}
+        <div className="relative overflow-hidden">
+          <img
+            src={car.images[0]}
+            alt={`${car.make} ${car.model}`}
+            className="h-60 w-full object-cover transition duration-700 group-hover:scale-110"
+          />
 
-        <p className="mt-1 text-sm text-gray-600">
-          {car.year} • {formattedMileage} km • {car.fuel}
-        </p>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-        <p className="mt-3 text-2xl font-bold text-blue-600">
-          ₹{formattedPrice}
-        </p>
+          <div className="absolute top-4 left-4 rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white">
+            {car.year}
+          </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          {car.features.slice(0, 3).map((feature) => (
-            <span
-              key={feature}
-              className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700"
-            >
-              {feature}
-            </span>
-          ))}
+          <div className="absolute bottom-4 left-4">
+            <h2 className="text-2xl font-bold text-white">
+              {car.make}
+            </h2>
+
+            <p className="text-lg text-white/90">
+              {car.model}
+            </p>
+          </div>
         </div>
 
-        <p className="mt-4 text-sm font-medium text-gray-700">View details →</p>
-      </div>
-    </Link>
+        {/* Content */}
+        <div className="space-y-5 p-6">
+
+          <div className="text-3xl font-black text-blue-500">
+            ₹{formattedPrice}
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+
+            <div className="rounded-2xl bg-slate-800 p-3">
+              <div className="flex items-center gap-2 text-slate-400">
+                <Gauge size={16} />
+                <span className="text-xs">Odometer</span>
+              </div>
+
+              <p className="mt-1 font-semibold text-white">
+                {formattedMileage} km
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-slate-800 p-3">
+              <div className="flex items-center gap-2 text-slate-400">
+                <Fuel size={16} />
+                <span className="text-xs">Fuel</span>
+              </div>
+
+              <p className="mt-1 font-semibold text-white">
+                {car.fuel}
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-slate-800 p-3">
+              <div className="flex items-center gap-2 text-slate-400">
+                <Calendar size={16} />
+                <span className="text-xs">Year</span>
+              </div>
+
+              <p className="mt-1 font-semibold text-white">
+                {car.year}
+              </p>
+            </div>
+
+            <div className="rounded-2xl bg-slate-800 p-3">
+              <div className="flex items-center gap-2 text-slate-400">
+                <MapPin size={16} />
+                <span className="text-xs">Location</span>
+              </div>
+
+              <p className="mt-1 truncate font-semibold text-white">
+                {car.location}
+              </p>
+            </div>
+
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {car.features.slice(0, 3).map((feature) => (
+              <span
+                key={feature}
+                className="rounded-full bg-blue-600/15 px-3 py-1 text-xs font-medium text-blue-400"
+              >
+                {feature}
+              </span>
+            ))}
+          </div>
+
+          <div className="rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 py-3 text-center font-semibold text-white transition group-hover:shadow-lg group-hover:shadow-blue-500/40">
+            View Details →
+          </div>
+
+        </div>
+
+      </Link>
+    </Card>
   );
 }
