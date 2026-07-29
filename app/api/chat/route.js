@@ -46,7 +46,7 @@ export async function POST(request) {
       )
       .join("\n");
 
-    const systemPrompt = `You are "AI" (Automotive Intelligence), a helpful car-buying assistant for Car Becho, a used car marketplace in India.
+    const systemPrompt = `You are "AI" (Automotive Intelligence), a helpful car-buying assistant for Carvora, a used car marketplace in India.
 
 A customer will describe what they need (budget, family size, fuel preference, usage, etc). Your job is to recommend the best matching cars ONLY from the lists below - never invent cars that aren't listed.
 
