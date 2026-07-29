@@ -10,7 +10,6 @@ const FALLBACK_IMAGE =
 export default function Carcyclopedia() {
 
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selected, setSelected] = useState([]);
@@ -121,17 +120,6 @@ export default function Carcyclopedia() {
 
 
 
-  const categories = [
-    "All",
-    ...new Set(
-      cars
-        .map((car) => car.category)
-        .filter(Boolean)
-    )
-  ];
-
-
-
   const filteredCars = cars.filter((car) => {
 
     const text = search.toLowerCase();
@@ -142,12 +130,7 @@ export default function Carcyclopedia() {
       car.model?.toLowerCase().includes(text);
 
 
-    const matchesCategory =
-      category === "All" ||
-      car.category === category;
-
-
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
 
   });
 
@@ -225,48 +208,6 @@ export default function Carcyclopedia() {
             marginBottom:"25px"
           }}
         />
-
-
-
-        {!loading && (
-
-          <div
-            style={{
-              display:"flex",
-              gap:"10px",
-              flexWrap:"wrap",
-              marginBottom:"30px"
-            }}
-          >
-
-            {categories.map((cat)=>(
-
-              <button
-                key={cat}
-                onClick={()=>setCategory(cat)}
-                style={{
-                  padding:"10px 18px",
-                  borderRadius:"999px",
-                  border:"1px solid #cbd5e1",
-                  cursor:"pointer",
-                  background:
-                    category === cat
-                    ? "#2563eb"
-                    : "white",
-                  color:
-                    category === cat
-                    ? "white"
-                    : "#0f172a"
-                }}
-              >
-                {cat}
-              </button>
-
-            ))}
-
-          </div>
-
-        )}
 
 
 
