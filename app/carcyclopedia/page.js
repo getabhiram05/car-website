@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { MagicCard } from "@/components/ui/magic-card";
 import { PixelImage } from "@/components/ui/pixel-image";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80";
@@ -165,6 +166,11 @@ export default function Carcyclopedia() {
         paddingBottom: selected.length > 0 ? "110px" : undefined
       }}
     >
+      <SmoothCursor
+  color="#22d3ee"
+  size={18}
+  smoothness={0.15}
+/>
 
       <div className="mx-auto max-w-7xl">
 
