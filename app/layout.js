@@ -1,6 +1,7 @@
 import "./globals.css";
 import Header from "../components/Header";
 import AiChatWidget from "../components/AiChatWidget";
+import { SmoothCursor } from "@/components/ui/smooth-cursor";
 
 export const metadata = {
   title: "Carvora - Search. Research. Drive.",
@@ -17,8 +18,12 @@ export default function RootLayout({ children }) {
           backgroundColor: "#f8fafc",
         }}
       >
+        <SmoothCursor />
+
         <Header />
+
         {children}
+
         <AiChatWidget />
       </body>
     </html>

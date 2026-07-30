@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
-import { SmoothCursor } from "@/components/ui/smooth-cursor";
+
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80";
@@ -212,11 +212,7 @@ function CompareContent() {
   return (
 
     <main className="min-h-screen bg-[#05070d] px-4 py-10 text-slate-100 sm:px-6 lg:px-8">
-      <SmoothCursor
-  color="#22d3ee"
-  size={18}
-  smoothness={0.15}
-/>
+    
 
       <div className="mx-auto max-w-7xl">
 
