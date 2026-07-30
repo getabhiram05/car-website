@@ -18,7 +18,8 @@ export const PixelImage = ({
   pixelFadeInDuration = 1000,
   maxAnimationDelay = 1200,
   colorRevealDelay = 1300,
-  customGrid
+  customGrid,
+  className
 }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [showColor, setShowColor] = useState(false)
@@ -69,8 +70,8 @@ export const PixelImage = ({
     });
   }, [rows, cols, maxAnimationDelay])
 
-  return (
-    <div className="relative h-72 w-72 select-none md:h-96 md:w-96">
+ return (
+    <div className={cn("relative h-72 w-72 select-none md:h-96 md:w-96", className)}>
       {pieces.map((piece, index) => (
         <div
           key={index}
@@ -87,7 +88,7 @@ export const PixelImage = ({
             src={src}
             alt={`Pixel image piece ${index + 1}`}
             className={cn(
-              "z-1 rounded-[2.5rem] object-cover",
+              "z-1 h-full w-full rounded-none object-cover",
               grayscaleAnimation && (showColor ? "grayscale-0" : "grayscale")
             )}
             style={{

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { MagicCard } from "@/components/ui/magic-card";
-import { PixelImage } from "@/components/ui/pixel-image";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80";
@@ -214,16 +213,16 @@ export default function Carcyclopedia() {
 
               return (
 
-                <MagicCard
-                  key={car.slug}
-                  className={`relative overflow-hidden rounded-2xl p-0 [--color-background:#0f172a] ${
-                    isSelected
-                      ? "border-2 border-cyan-500"
-                      : "border border-slate-800"
-                  }`}
-                  gradientColor="#0e7490"
-                  gradientOpacity={0.4}
-                >
+               <MagicCard
+  key={car.slug}
+  className={`relative overflow-hidden rounded-2xl p-0 [--color-background:#0f172a] ${
+    isSelected
+      ? "border-2 border-cyan-500"
+      : "border border-slate-800"
+  }`}
+  gradientColor="#0e7490"
+  gradientOpacity={0.4}
+>
 
                   <label
                     onClick={(e) => e.stopPropagation()}
@@ -243,13 +242,12 @@ export default function Carcyclopedia() {
                     className="block text-inherit no-underline"
                   >
 
-                    <div className="h-[180px] w-full overflow-hidden">
-                      <PixelImage
-                        src={car.image}
-                        alt={`${car.make} ${car.model}`}
-                        className="h-[180px] w-full object-cover"
-                      />
-                    </div>
+                    <img
+                      src={car.image}
+                      alt={`${car.make} ${car.model}`}
+                      loading="lazy"
+                      className="h-[180px] w-full object-cover"
+                    />
 
 
                     <div className="p-4">
