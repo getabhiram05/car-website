@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 const SUGGESTIONS = [
   {
@@ -82,76 +83,89 @@ export default function AiAssistantPage() {
     sendMessage(input);
   }
 
+  const lastAssistantIndex = messages
+    .map((m) => m.role)
+    .lastIndexOf("assistant");
+
   return (
-    <main className="min-h-screen bg-bg text-[var(--color-on-surface)] px-5 py-10">
-      <div className="max-w-5xl mx-auto">
+    <main className="min-h-screen bg-[#05070d] px-5 py-10 text-slate-100">
+      <div className="mx-auto max-w-5xl">
         {/* HERO */}
-        <div className="grid gap-6 md:grid-cols-[2fr_1fr] mb-8">
-          <div className="glass-card p-8">
-            <span className="badge badge-mint mb-4 inline-block">
+        <div className="mb-8 grid gap-6 md:grid-cols-[2fr_1fr]">
+          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-8 backdrop-blur">
+            <span className="mb-4 inline-block rounded-full bg-cyan-500/10 px-3.5 py-1.5 text-xs font-bold text-cyan-300">
               System Status: Optimal
             </span>
-            <h1 className="font-sora text-4xl md:text-5xl font-extrabold leading-tight mb-4">
+            <h1 className="mb-4 text-4xl font-extrabold leading-tight text-white md:text-5xl">
               Automotive
               <br />
-              <span className="text-[var(--color-secondary-light)]">
-                Intelligence
-              </span>
+              <span className="text-cyan-400">Intelligence</span>
             </h1>
-            <p className="text-[var(--color-on-surface-variant)] leading-relaxed max-w-md">
+            <p className="max-w-md leading-relaxed text-slate-400">
               Your concierge for real listings, comparisons, and buying
-              guidance — grounded in what's actually available right now.
+              guidance — grounded in what&apos;s actually available right now.
             </p>
           </div>
 
-          <div className="glass-card p-8 flex flex-col items-center justify-center text-center">
-            <div className="text-4xl mb-3">🤖</div>
-            <h3 className="font-sora text-lg font-semibold mb-1">
+          <div className="flex flex-col items-center justify-center rounded-3xl border border-slate-800 bg-slate-900/50 p-8 text-center backdrop-blur">
+            <div className="mb-3 text-4xl">🤖</div>
+            <h3 className="mb-1 text-lg font-semibold text-white">
               Ready to assist
             </h3>
-            <p className="text-sm text-[var(--color-on-surface-variant)]">
+            <p className="text-sm text-slate-400">
               Ask about listings, prices, or comparisons
             </p>
           </div>
         </div>
 
         {/* SUGGESTION CARDS */}
-        <div className="grid gap-4 sm:grid-cols-2 mb-8">
+        <div className="mb-8 grid gap-4 sm:grid-cols-2">
           {SUGGESTIONS.map((s) => (
             <button
               key={s.label}
               onClick={() => sendMessage(s.text)}
-              className="glass-card p-5 text-left hover:bg-white/10 transition"
+              className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 text-left backdrop-blur transition hover:bg-slate-800/60"
             >
-              <span className="font-mono-label text-[var(--color-secondary-light)] block mb-2">
+              <span className="mb-2 block font-mono text-sm text-cyan-400">
                 {s.label}
               </span>
-              <span className="text-[var(--color-on-surface)]">{s.text}</span>
+              <span className="text-slate-200">{s.text}</span>
             </button>
           ))}
         </div>
 
         {/* CHAT WINDOW */}
-        <div className="glass-card overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/50 backdrop-blur">
           <div
             ref={scrollRef}
-            className="h-96 overflow-y-auto p-6 flex flex-col gap-3"
+            className="flex h-96 flex-col gap-3 overflow-y-auto p-6"
           >
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`max-w-[85%] px-4 py-3 rounded-lg text-sm leading-relaxed whitespace-pre-wrap ${
+                className={`max-w-[85%] whitespace-pre-wrap rounded-lg px-4 py-3 text-sm leading-relaxed ${
                   msg.role === "user"
-                    ? "self-end bg-[var(--color-secondary)] text-white"
-                    : "self-start bg-surface-container text-[var(--color-on-surface)]"
+                    ? "self-end bg-cyan-500 text-slate-950"
+                    : "self-start bg-slate-800/70 text-slate-100"
                 }`}
               >
-                {msg.text}
+                {msg.role === "assistant" && i === lastAssistantIndex ? (
+                  <TypingAnimation
+                    key={i}
+                    duration={15}
+                    className="whitespace-pre-wrap text-sm font-normal leading-relaxed text-slate-100"
+                    as="span"
+                  >
+                    {msg.text}
+                  </TypingAnimation>
+                ) : (
+                  msg.text
+                )}
               </div>
             ))}
 
             {isLoading && (
-              <div className="self-start text-sm text-[var(--color-on-surface-variant)] px-1">
+              <div className="self-start px-1 text-sm text-slate-400">
                 AI is thinking...
               </div>
             )}
@@ -159,19 +173,19 @@ export default function AiAssistantPage() {
 
           <form
             onSubmit={handleSubmit}
-            className="flex gap-3 p-4 border-t border-[var(--color-outline)]"
+            className="flex gap-3 border-t border-slate-800 p-4"
           >
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about specifications, market data, or vehicle history..."
               disabled={isLoading}
-              className="input-dark flex-1 px-4 py-3"
+              className="flex-1 rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-500"
             />
             <button
               type="submit"
               disabled={isLoading}
-              className="btn-primary disabled:opacity-50"
+              className="rounded-lg bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:opacity-50"
             >
               Send
             </button>

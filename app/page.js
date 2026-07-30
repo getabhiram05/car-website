@@ -3,10 +3,14 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabaseClient";
 import { NumberTicker } from "@/components/ui/number-ticker";
-import { AnimatedGradientText } from "@/components/ui/animated-gradient-text";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Marquee } from "@/components/ui/marquee";
+import { Highlighter } from "@/components/ui/highlighter";
+import { BorderBeam } from "@/components/ui/border-beam";
+import { Meteors } from "@/components/ui/meteors";
+import { RippleButton } from "@/components/ui/ripple-button";
+import { CoolMode } from "@/components/ui/cool-mode";
 
 const BRANDS = [
   "Maruti Suzuki",
@@ -98,7 +102,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#05070d] text-slate-100">
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[#0b1220] to-[#05070d] px-5 py-16 sm:py-20">
-        <div className="pointer-events-none absolute -top-40 left-1/2 h-96 w-[600px] -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
+        <Meteors number={20} />
 
         <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
           <div>
@@ -108,9 +112,9 @@ export default function Home() {
 
             <h1 className="mb-4 text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
               Buy and sell{" "}
-              <AnimatedGradientText className="text-inherit">
+              <Highlighter action="highlight" color="#0891b2">
                 used cars
-              </AnimatedGradientText>{" "}
+              </Highlighter>{" "}
               with confidence
             </h1>
 
@@ -120,15 +124,17 @@ export default function Home() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3">
-              <a href="/cars">
-                <ShimmerButton
-                  shimmerColor="#67e8f9"
-                  background="#0891b2"
-                  className="px-6 py-3 text-base font-bold"
-                >
-                  Browse Cars
-                </ShimmerButton>
-              </a>
+              <CoolMode>
+                <a href="/cars">
+                  <ShimmerButton
+                    shimmerColor="#67e8f9"
+                    background="#0891b2"
+                    className="px-6 py-3 text-base font-bold"
+                  >
+                    Browse Cars
+                  </ShimmerButton>
+                </a>
+              </CoolMode>
 
               <a
                 href="#seller-section"
@@ -139,7 +145,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-slate-800 bg-slate-900/50 p-5 shadow-2xl shadow-black/40 backdrop-blur">
+          <div className="relative overflow-hidden rounded-3xl border border-slate-800 bg-slate-900/50 p-5 shadow-2xl shadow-black/40 backdrop-blur">
             <img
               src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80"
               alt="Car"
@@ -155,6 +161,8 @@ export default function Home() {
                 clean mobile-friendly experience.
               </p>
             </div>
+
+            <BorderBeam duration={8} size={150} colorFrom="#0891b2" colorTo="#67e8f9" />
           </div>
         </div>
       </section>
@@ -186,8 +194,8 @@ export default function Home() {
       <section className="px-5 py-6">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-4">
           <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 text-center backdrop-blur">
-            <div className="mb-1 text-3xl font-extrabold text-cyan-400">
-              <NumberTicker value={totalCars} />+
+            <div className="mb-1 text-3xl font-extrabold">
+              <NumberTicker value={totalCars} className="text-cyan-400" />+
             </div>
             <div className="text-sm font-semibold text-slate-400">
               Cars Listed
@@ -195,8 +203,8 @@ export default function Home() {
           </div>
 
           <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 text-center backdrop-blur">
-            <div className="mb-1 text-3xl font-extrabold text-cyan-400">
-              <NumberTicker value={40} />+
+            <div className="mb-1 text-3xl font-extrabold">
+              <NumberTicker value={40} className="text-cyan-400" />+
             </div>
             <div className="text-sm font-semibold text-slate-400">
               Brands
@@ -356,13 +364,13 @@ export default function Home() {
           </div>
 
           <div className="flex justify-start sm:justify-end">
-            <button
-              type="button"
+            <RippleButton
               onClick={handleStartSelling}
               className="rounded-xl bg-cyan-500 px-6 py-3.5 text-base font-extrabold text-slate-950 transition hover:bg-cyan-400"
+              rippleColor="#a5f3fc"
             >
               Start Selling
-            </button>
+            </RippleButton>
           </div>
         </div>
       </section>

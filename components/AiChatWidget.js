@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 export default function AiChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -63,29 +64,16 @@ export default function AiChatWidget() {
     }
   }
 
+  const lastAssistantIndex = messages
+    .map((m) => m.role)
+    .lastIndexOf("assistant");
+
   return (
     <>
       {/* Floating button */}
       <button
         onClick={() => setIsOpen((v) => !v)}
-        style={{
-          position: "fixed",
-          bottom: "24px",
-          right: "24px",
-          zIndex: 50,
-          width: "60px",
-          height: "60px",
-          borderRadius: "50%",
-          background: "#2563eb",
-          color: "white",
-          border: "none",
-          boxShadow: "0 10px 25px rgba(37,99,235,.4)",
-          cursor: "pointer",
-          fontSize: "26px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center"
-        }}
+        className="fixed bottom-6 right-6 z-50 flex h-[60px] w-[60px] items-center justify-center rounded-full bg-cyan-500 text-2xl text-slate-950 shadow-lg shadow-cyan-500/30 transition hover:bg-cyan-400"
         aria-label="Open AI car assistant"
       >
         {isOpen ? "✕" : "🤖"}
@@ -93,91 +81,46 @@ export default function AiChatWidget() {
 
       {/* Chat window */}
       {isOpen && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: "96px",
-            right: "24px",
-            zIndex: 50,
-            width: "min(360px, calc(100vw - 32px))",
-            height: "min(500px, calc(100vh - 160px))",
-            background: "white",
-            borderRadius: "16px",
-            boxShadow: "0 20px 50px rgba(15,23,42,.25)",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-            border: "1px solid #e2e8f0"
-          }}
-        >
+        <div className="fixed bottom-24 right-6 z-50 flex h-[min(500px,calc(100vh-160px))] w-[min(360px,calc(100vw-32px))] flex-col overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 shadow-2xl shadow-black/40">
 
-          <div
-            style={{
-              background: "#0f172a",
-              color: "white",
-              padding: "14px 16px",
-              fontWeight: "700",
-              fontSize: "15px"
-            }}
-          >
+          <div className="bg-[#05070d] px-4 py-3.5 text-sm font-bold text-white">
             AI — Automotive Intelligence
-            <div
-              style={{
-                fontWeight: "400",
-                fontSize: "12px",
-                color: "#94a3b8",
-                marginTop: "2px"
-              }}
-            >
-              Tell me what you need, I'll find the right car
+            <div className="mt-0.5 text-xs font-normal text-slate-500">
+              Tell me what you need, I&apos;ll find the right car
             </div>
           </div>
 
           <div
             ref={scrollRef}
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              padding: "16px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "10px",
-              background: "#f8fafc"
-            }}
+            className="flex flex-1 flex-col gap-2.5 overflow-y-auto bg-slate-950/40 p-4"
           >
 
             {messages.map((msg, i) => (
               <div
                 key={i}
-                style={{
-                  alignSelf: msg.role === "user" ? "flex-end" : "flex-start",
-                  maxWidth: "85%",
-                  background: msg.role === "user" ? "#2563eb" : "white",
-                  color: msg.role === "user" ? "white" : "#0f172a",
-                  padding: "10px 14px",
-                  borderRadius: "14px",
-                  fontSize: "14px",
-                  lineHeight: "1.4",
-                  boxShadow:
-                    msg.role === "user"
-                      ? "none"
-                      : "0 2px 8px rgba(15,23,42,.08)",
-                  whiteSpace: "pre-wrap"
-                }}
+                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
+                  msg.role === "user"
+                    ? "self-end bg-cyan-500 text-slate-950"
+                    : "self-start bg-slate-800/80 text-slate-100"
+                }`}
               >
-                {msg.text}
+                {msg.role === "assistant" && i === lastAssistantIndex ? (
+                  <TypingAnimation
+                    key={i}
+                    duration={15}
+                    className="whitespace-pre-wrap text-sm font-normal leading-relaxed text-slate-100"
+                    as="span"
+                  >
+                    {msg.text}
+                  </TypingAnimation>
+                ) : (
+                  msg.text
+                )}
               </div>
             ))}
 
             {isLoading && (
-              <div
-                style={{
-                  alignSelf: "flex-start",
-                  color: "#94a3b8",
-                  fontSize: "13px",
-                  padding: "6px 4px"
-                }}
-              >
+              <div className="self-start px-1 py-1.5 text-[13px] text-slate-500">
                 AI is thinking...
               </div>
             )}
@@ -186,41 +129,19 @@ export default function AiChatWidget() {
 
           <form
             onSubmit={handleSend}
-            style={{
-              display: "flex",
-              borderTop: "1px solid #e2e8f0",
-              padding: "10px",
-              gap: "8px",
-              background: "white"
-            }}
+            className="flex gap-2 border-t border-slate-800 bg-slate-900 p-2.5"
           >
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="e.g. Family car under 8 lakh, diesel"
               disabled={isLoading}
-              style={{
-                flex: 1,
-                border: "1px solid #cbd5e1",
-                borderRadius: "10px",
-                padding: "10px 12px",
-                fontSize: "14px",
-                outline: "none"
-              }}
+              className="flex-1 rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2.5 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-cyan-500"
             />
             <button
               type="submit"
               disabled={isLoading}
-              style={{
-                background: "#2563eb",
-                color: "white",
-                border: "none",
-                borderRadius: "10px",
-                padding: "0 16px",
-                fontWeight: "600",
-                cursor: isLoading ? "not-allowed" : "pointer",
-                opacity: isLoading ? 0.6 : 1
-              }}
+              className="rounded-lg bg-cyan-500 px-4 font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               Send
             </button>

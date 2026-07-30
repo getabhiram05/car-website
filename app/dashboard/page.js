@@ -39,30 +39,30 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <p className="text-gray-600">Loading dashboard...</p>
+          <p className="text-slate-400">Loading dashboard...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+            <h1 className="text-3xl font-extrabold text-white sm:text-4xl">
               My Listings
             </h1>
-            <p className="mt-2 text-lg text-gray-600">
+            <p className="mt-2 text-lg text-slate-400">
               Logged in as {user?.email}
             </p>
           </div>
 
           <Link
             href="/dashboard/new"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700"
+            className="inline-flex items-center justify-center rounded-lg bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
           >
             + Add New Listing
           </Link>
@@ -73,12 +73,12 @@ export default function DashboardPage() {
             {cars.map((car) => (
               <div
                 key={car.id}
-                className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-gray-200"
+                className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 backdrop-blur"
               >
-                <h3 className="text-lg font-semibold text-gray-900">
+                <h3 className="text-lg font-semibold text-white">
                   {car.year} {car.make} {car.model}
                 </h3>
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="mt-1 text-sm text-slate-400">
                   ₹{car.price.toLocaleString("en-IN")} ·{" "}
                   {car.mileage.toLocaleString("en-IN")} km
                 </p>
@@ -86,13 +86,13 @@ export default function DashboardPage() {
                 <div className="mt-4 flex gap-3">
                   <Link
                     href={`/dashboard/edit/${car.id}`}
-                    className="flex-1 rounded-lg bg-gray-900 px-4 py-2 text-center text-sm font-semibold text-white transition hover:bg-gray-800"
+                    className="flex-1 rounded-lg bg-cyan-500 px-4 py-2 text-center text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
                   >
                     Edit
                   </Link>
                   <Link
                     href={`/cars/${car.id}`}
-                    className="flex-1 rounded-lg bg-white px-4 py-2 text-center text-sm font-semibold text-gray-900 ring-1 ring-gray-300 transition hover:bg-gray-100"
+                    className="flex-1 rounded-lg border border-slate-700 bg-slate-900/60 px-4 py-2 text-center text-sm font-semibold text-slate-100 transition hover:bg-slate-800/60"
                   >
                     View
                   </Link>
@@ -101,11 +101,11 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-200">
-            <h3 className="text-xl font-semibold text-gray-900">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-8 text-center backdrop-blur">
+            <h3 className="text-xl font-semibold text-white">
               No listings yet
             </h3>
-            <p className="mt-2 text-gray-600">
+            <p className="mt-2 text-slate-400">
               Click &quot;Add New Listing&quot; to create your first car
               listing.
             </p>

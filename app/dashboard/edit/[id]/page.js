@@ -192,27 +192,27 @@ export default function EditListingPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+      <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl">
-          <p className="text-gray-600">Loading listing...</p>
+          <p className="text-slate-400">Loading listing...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-[#05070d] px-4 py-10 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl">
-        <div className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200">
+        <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-8 backdrop-blur">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-white">
               Edit Listing
             </h1>
 
             <button
               type="button"
               onClick={handleDelete}
-              className="rounded-lg bg-red-50 px-4 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-100"
+              className="rounded-lg bg-red-500/10 px-4 py-2 text-sm font-semibold text-red-400 transition hover:bg-red-500/20"
             >
               Delete Listing
             </button>
@@ -221,7 +221,7 @@ export default function EditListingPage() {
           <form onSubmit={handleSubmit} className="mt-6 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Make
                 </label>
                 <input
@@ -229,12 +229,12 @@ export default function EditListingPage() {
                   required
                   value={make}
                   onChange={(e) => setMake(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Model
                 </label>
                 <input
@@ -242,12 +242,12 @@ export default function EditListingPage() {
                   required
                   value={model}
                   onChange={(e) => setModel(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Year
                 </label>
                 <input
@@ -255,12 +255,12 @@ export default function EditListingPage() {
                   required
                   value={year}
                   onChange={(e) => setYear(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Price (₹)
                 </label>
                 <input
@@ -268,43 +268,43 @@ export default function EditListingPage() {
                   required
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
-                  Mileage (km)
+                <label className="mb-2 block text-sm font-medium text-slate-300">
+                  Odometer (km)
                 </label>
                 <input
                   type="number"
                   required
                   value={mileage}
                   onChange={(e) => setMileage(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Color
                 </label>
                 <input
                   type="text"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Fuel Type
                 </label>
                 <select
                   value={fuel}
                   onChange={(e) => setFuel(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 >
                   <option>Petrol</option>
                   <option>Diesel</option>
@@ -314,13 +314,13 @@ export default function EditListingPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Transmission
                 </label>
                 <select
                   value={transmission}
                   onChange={(e) => setTransmission(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 >
                   <option>Manual</option>
                   <option>Automatic</option>
@@ -328,13 +328,13 @@ export default function EditListingPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Owner
                 </label>
                 <select
                   value={owner}
                   onChange={(e) => setOwner(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 >
                   <option>1st Owner</option>
                   <option>2nd Owner</option>
@@ -344,7 +344,7 @@ export default function EditListingPage() {
               </div>
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-gray-700">
+                <label className="mb-2 block text-sm font-medium text-slate-300">
                   Location
                 </label>
                 <input
@@ -352,13 +352,13 @@ export default function EditListingPage() {
                   required
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-slate-300">
                 Current Photos
               </label>
               {existingImages.length > 0 ? (
@@ -368,7 +368,7 @@ export default function EditListingPage() {
                       <img
                         src={url}
                         alt="Car"
-                        className="h-24 w-full rounded-lg object-cover ring-1 ring-gray-200"
+                        className="h-24 w-full rounded-lg border border-slate-700 object-cover"
                       />
                       <button
                         type="button"
@@ -381,14 +381,14 @@ export default function EditListingPage() {
                   ))}
                 </div>
               ) : (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-slate-500">
                   No photos on this listing yet.
                 </p>
               )}
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-slate-300">
                 Add More Photos (up to 5MB each)
               </label>
               <input
@@ -396,10 +396,10 @@ export default function EditListingPage() {
                 accept="image/png, image/jpeg, image/webp"
                 multiple
                 onChange={handleFileChange}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
               />
               {selectedFiles.length > 0 ? (
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-slate-500">
                   {selectedFiles.length} new photo
                   {selectedFiles.length > 1 ? "s" : ""} selected
                 </p>
@@ -407,25 +407,25 @@ export default function EditListingPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-gray-700">
+              <label className="mb-2 block text-sm font-medium text-slate-300">
                 Description
               </label>
               <textarea
                 rows={4}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
               />
             </div>
 
             {errorMessage ? (
-              <p className="text-sm text-red-600">{errorMessage}</p>
+              <p className="text-sm text-red-400">{errorMessage}</p>
             ) : null}
 
             <button
               type="submit"
               disabled={isSaving}
-              className="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg bg-cyan-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isUploading
                 ? "Uploading photos..."

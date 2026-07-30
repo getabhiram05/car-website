@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { Calendar, Fuel, Gauge, MapPin } from "lucide-react";
-import { Card } from "./ui/card";
+import { MagicCard } from "@/components/ui/magic-card";
 
 export default function CarCard({ car }) {
   const formattedPrice = new Intl.NumberFormat("en-IN").format(car.price);
   const formattedMileage = new Intl.NumberFormat("en-IN").format(car.mileage);
 
   return (
-    <Card className="overflow-hidden group">
-      <Link href={`/cars/${car.id}`}>
+<MagicCard
+  className="overflow-hidden rounded-2xl border border-slate-800 p-0 [--color-background:#0f172a]"
+  gradientColor="#0e7490"
+  gradientOpacity={0.4}
+>
+      <Link href={`/cars/${car.id}`} className="group block">
 
         {/* Image */}
         <div className="relative overflow-hidden">
@@ -108,6 +112,6 @@ export default function CarCard({ car }) {
         </div>
 
       </Link>
-    </Card>
+    </MagicCard>
   );
 }

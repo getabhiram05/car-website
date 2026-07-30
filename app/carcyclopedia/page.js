@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import { MagicCard } from "@/components/ui/magic-card";
+import { PixelImage } from "@/components/ui/pixel-image";
 
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=1200&q=80";
@@ -212,13 +214,15 @@ export default function Carcyclopedia() {
 
               return (
 
-                <div
+                <MagicCard
                   key={car.slug}
-                  className={`relative overflow-hidden rounded-2xl bg-slate-900/50 backdrop-blur ${
+                  className={`relative overflow-hidden rounded-2xl p-0 [--color-background:#0f172a] ${
                     isSelected
                       ? "border-2 border-cyan-500"
                       : "border border-slate-800"
                   }`}
+                  gradientColor="#0e7490"
+                  gradientOpacity={0.4}
                 >
 
                   <label
@@ -239,12 +243,13 @@ export default function Carcyclopedia() {
                     className="block text-inherit no-underline"
                   >
 
-                    <img
-                      src={car.image}
-                      alt={`${car.make} ${car.model}`}
-                      loading="lazy"
-                      className="h-[180px] w-full object-cover"
-                    />
+                    <div className="h-[180px] w-full overflow-hidden">
+                      <PixelImage
+                        src={car.image}
+                        alt={`${car.make} ${car.model}`}
+                        className="h-[180px] w-full object-cover"
+                      />
+                    </div>
 
 
                     <div className="p-4">
@@ -269,7 +274,7 @@ export default function Carcyclopedia() {
                   </a>
 
 
-                </div>
+                </MagicCard>
 
               );
 
