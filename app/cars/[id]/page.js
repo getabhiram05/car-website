@@ -1,5 +1,6 @@
 import Link from "next/link";
 import CarGallery from "../../../components/CarGallery";
+import MessageSellerButton from "../../../components/MessageSellerButton";
 import { supabase } from "../../../lib/supabaseClient";
 
 export default async function CarDetailPage({ params }) {
@@ -74,9 +75,16 @@ export default async function CarDetailPage({ params }) {
             {selectedCar.make} {selectedCar.model}
           </h1>
 
-          <p className="mb-6 text-3xl font-extrabold text-cyan-400">
+          <p className="mb-4 text-3xl font-extrabold text-cyan-400">
             ₹{new Intl.NumberFormat("en-IN").format(selectedCar.price)}
           </p>
+
+          <div className="mb-8">
+            <MessageSellerButton
+              carId={selectedCar.id}
+              sellerId={selectedCar.seller_id}
+            />
+          </div>
 
           <div className="mb-8 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
             {detailItems.map((item) => (

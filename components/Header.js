@@ -76,6 +76,12 @@ export default function Header() {
           {isLoading ? null : user ? (
             <>
               <Link
+                href="/messages"
+                className="text-sm font-medium text-slate-300 hover:text-white"
+              >
+                Messages
+              </Link>
+              <Link
                 href="/dashboard"
                 className="text-sm font-medium text-slate-300 hover:text-white"
               >
@@ -156,6 +162,13 @@ export default function Header() {
 
                 {isLoading ? null : user ? (
                   <>
+                    <Link
+                      href="/messages"
+                      onClick={closeMobile}
+                      className="text-base font-medium text-slate-200"
+                    >
+                      Messages
+                    </Link>
                     <Link
                       href="/dashboard"
                       onClick={closeMobile}
