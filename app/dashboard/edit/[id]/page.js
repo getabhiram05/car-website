@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "../../../../lib/supabaseClient";
+import { playClickSound } from "../../../../lib/playClickSound";
 
 export default function EditListingPage() {
   const router = useRouter();
   const params = useParams();
   const carId = params.id;
+  const fileInputRef = useRef(null);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -81,6 +83,10 @@ export default function EditListingPage() {
     setSelectedFiles(files);
   }
 
+  function handleChooseFilesClick() {
+    fileInputRef.current?.click();
+  }
+
   function removeExistingImage(urlToRemove) {
     setExistingImages((prev) => prev.filter((url) => url !== urlToRemove));
   }
@@ -114,6 +120,7 @@ export default function EditListingPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    playClickSound();
     setErrorMessage("");
     setIsSaving(true);
 
@@ -172,6 +179,8 @@ export default function EditListingPage() {
   }
 
   async function handleDelete() {
+    playClickSound();
+
     const confirmed = window.confirm(
       "Are you sure you want to delete this listing? This cannot be undone."
     );
@@ -391,19 +400,33 @@ export default function EditListingPage() {
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Add More Photos (up to 5MB each)
               </label>
+
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="image/png, image/jpeg, image/webp"
                 multiple
                 onChange={handleFileChange}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
+                className="hidden"
               />
-              {selectedFiles.length > 0 ? (
-                <p className="mt-1 text-xs text-slate-500">
-                  {selectedFiles.length} new photo
-                  {selectedFiles.length > 1 ? "s" : ""} selected
-                </p>
-              ) : null}
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleChooseFilesClick}
+                  className="rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm font-medium text-slate-100 transition hover:border-cyan-500"
+                >
+                  Choose Photos
+                </button>
+
+                <span className="text-sm text-slate-400">
+                  {selectedFiles.length > 0
+                    ? `${selectedFiles.length} new photo${
+                        selectedFiles.length > 1 ? "s" : ""
+                      } selected`
+                    : "No new photos selected"}
+                </span>
+              </div>
             </div>
 
             <div>

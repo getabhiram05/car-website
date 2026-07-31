@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "../../../lib/supabaseClient";
+import { playClickSound } from "../../../lib/playClickSound";
 
 export default function NewListingPage() {
   const router = useRouter();
+  const fileInputRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -45,6 +47,10 @@ export default function NewListingPage() {
     setSelectedFiles(files);
   }
 
+  function handleChooseFilesClick() {
+    fileInputRef.current?.click();
+  }
+
   async function uploadImages(userId) {
     const uploadedUrls = [];
 
@@ -74,6 +80,7 @@ export default function NewListingPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    playClickSound();
     setErrorMessage("");
     setIsLoading(true);
 
@@ -344,19 +351,33 @@ export default function NewListingPage() {
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Upload Photos (up to 5MB each)
               </label>
+
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="image/png, image/jpeg, image/webp"
                 multiple
                 onChange={handleFileChange}
-                className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-slate-100 outline-none focus:border-cyan-500"
+                className="hidden"
               />
-              {selectedFiles.length > 0 ? (
-                <p className="mt-1 text-xs text-slate-500">
-                  {selectedFiles.length} photo
-                  {selectedFiles.length > 1 ? "s" : ""} selected
-                </p>
-              ) : null}
+
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={handleChooseFilesClick}
+                  className="rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-3 text-sm font-medium text-slate-100 transition hover:border-cyan-500"
+                >
+                  Choose Photos
+                </button>
+
+                <span className="text-sm text-slate-400">
+                  {selectedFiles.length > 0
+                    ? `${selectedFiles.length} photo${
+                        selectedFiles.length > 1 ? "s" : ""
+                      } selected`
+                    : "No photos selected"}
+                </span>
+              </div>
             </div>
 
             <div>

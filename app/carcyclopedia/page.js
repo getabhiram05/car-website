@@ -176,8 +176,8 @@ export default function Carcyclopedia() {
 
 
         <p className="mb-8 text-lg text-slate-400">
-          An enthusiast&apos;s guide to popular cars in India —
-          specs, history, and everything in between.
+          An enthusiast&apos;s guide to popular cars in India 
+        
         </p>
 
 

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { supabase } from "../../lib/supabaseClient";
+import { playClickSound } from "../../lib/playClickSound";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +15,7 @@ export default function LoginPage() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    playClickSound();
     setErrorMessage("");
     setIsLoading(true);
 
